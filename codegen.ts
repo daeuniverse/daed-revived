@@ -5,7 +5,7 @@ export default {
   schema: process.env.SCHEMA_PATH,
   documents: 'src/**/*',
   generates: {
-    'src/schemas/gql/': {
+    'src/gql/': {
       preset: 'client',
     },
   },
