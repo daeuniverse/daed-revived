@@ -5,15 +5,20 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "build": "tsc && vite build",
+    "build": "vite build",
+    "codegen": "graphql-codegen",
     "dev": "vite",
-    "preview": "vite preview"
+    "prepare": "husky install",
+    "serve": "vite preview"
   },
   "dependencies": {
     "@commitlint/config-conventional": "^17.7.0",
     "@felte/solid": "^1.2.11",
     "@felte/validator-zod": "^1.0.17",
     "@fontsource/fira-sans": "^5.0.12",
+    "@graphql-codegen/cli": "^5.0.0",
+    "@graphql-codegen/client-preset": "^4.1.0",
+    "@parcel/watcher": "^2.3.0",
     "@solid-primitives/clipboard": "^1.5.7",
     "@solid-primitives/event-listener": "^2.3.0",
     "@solid-primitives/i18n": "^1.4.1",
@@ -38,6 +43,7 @@
     "eslint": "^8.49.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.0",
+    "graphql": "^16.8.1",
     "husky": "^8.0.3",
     "ky": "^1.0.1",
     "lint-staged": "^14.0.1",
