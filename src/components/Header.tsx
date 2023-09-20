@@ -1,4 +1,4 @@
-import { useNavigate } from '@solidjs/router'
+import { A, useNavigate } from '@solidjs/router'
 import { Show } from 'solid-js'
 import { endpoint, setEndpoint } from '~/apis'
 
@@ -8,7 +8,9 @@ export const Header = () => {
   return (
     <div class="navbar bg-base-100">
       <div class="navbar-start">
-        <a class="btn btn-ghost text-xl normal-case">daed</a>
+        <A class="btn btn-ghost text-xl normal-case" href="/">
+          daed
+        </A>
       </div>
 
       <div class="navbar-center">
@@ -28,17 +30,29 @@ export const Header = () => {
       </div>
 
       <div class="navbar-end">
-        <Show when={endpoint()}>
-          <a
+        <Show
+          when={endpoint()}
+          fallback={
+            <button
+              class="btn"
+              onClick={() => {
+                navigate('/setup')
+              }}
+            >
+              Setup
+            </button>
+          }
+        >
+          <button
             class="btn"
             onClick={() => {
               setEndpoint()
 
-              navigate('/')
+              navigate('/setup')
             }}
           >
             Logout
-          </a>
+          </button>
         </Show>
       </div>
     </div>

@@ -6,6 +6,7 @@ declare module 'solid-js' {
   }
 }
 
+// backend endpoint url and credentials after the setup step
 export type Endpoint = {
   url: string
   token: string
