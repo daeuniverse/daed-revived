@@ -7,14 +7,17 @@ import 'dayjs/locale/zh-cn'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { render } from 'solid-js/web'
 import { App } from '~/App'
+import { GraphqlClientProvider } from '~/apis'
 
 dayjs.extend(relativeTime)
 
 render(
   () => (
-    <Router source={hashIntegration()}>
-      <App />
-    </Router>
+    <GraphqlClientProvider>
+      <Router source={hashIntegration()}>
+        <App />
+      </Router>
+    </GraphqlClientProvider>
   ),
   document.getElementById('root')!,
 )
