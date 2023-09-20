@@ -6,4 +6,7 @@ declare module 'solid-js' {
   }
 }
 
-export * from './graphql'
+export type Endpoint = {
+  url: string
+  token: string
+}

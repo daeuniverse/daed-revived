@@ -1,34 +1,19 @@
-import {
-  createGraphQLClient,
-  GraphQLClientQuery,
-} from '@solid-primitives/graphql'
+import { createGraphQLClient } from '@solid-primitives/graphql'
 import { makePersisted } from '@solid-primitives/storage'
-import {
-  Accessor,
-  children,
-  createContext,
-  createMemo,
-  createSignal,
-  ParentComponent,
-  useContext,
-} from 'solid-js'
+import { createSignal } from 'solid-js'
+import type { Endpoint } from '~/typings'
 
-const GraphqlClientContext = createContext<Accessor<GraphQLClientQuery>>(
-  null as unknown as Accessor<GraphQLClientQuery>,
-)
-export const [endpointURL, setEndpointURL] = makePersisted(createSignal(''), {
-  name: 'endpointURL',
+export const [endpoint, setEndpoint] = makePersisted(createSignal<Endpoint>(), {
+  name: 'endpoint',
   storage: localStorage,
 })
 
-export const useGraphqlClient = () => useContext(GraphqlClientContext)
+export const useGraphqlClient = () => {
+  const endpointValue = endpoint()!
 
-export const GraphqlClientProvider: ParentComponent = (props) => {
-  const graphqlClient = createMemo(() => createGraphQLClient(endpointURL()))
-
-  return (
-    <GraphqlClientContext.Provider value={graphqlClient}>
-      {children(() => props.children)()}
-    </GraphqlClientContext.Provider>
-  )
+  return createGraphQLClient(endpointValue.url, {
+    headers: {
+      Authorization: `Bearer ${endpointValue.token}`,
+    },
+  })
 }
