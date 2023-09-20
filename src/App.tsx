@@ -21,7 +21,7 @@ const ProtectedResources = () => {
       <span>Number users: {numberUsers()?.numberUsers}</span>
 
       <button class="btn btn-secondary" onClick={() => setEndpointURL('')}>
-        Clear EndpointURL
+        Clear Endpoint URL
       </button>
     </div>
   )
