@@ -9,7 +9,7 @@ import { TokenQuery } from '~/gql'
 const schema = z.object({
   endpointURL: z.string().nonempty(),
   username: z.string().nonempty(),
-  password: z.string().nonempty(),
+  password: z.string().nonempty()
 })
 
 export const Setup = () => {
@@ -28,18 +28,18 @@ export const Setup = () => {
         {
           variables: {
             username,
-            password,
-          },
-        },
+            password
+          }
+        }
       )
 
       setEndpoint({
         url: endpointURL,
-        token,
+        token
       })
 
       navigate('/')
-    },
+    }
   })
 
   return (

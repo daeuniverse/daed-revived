@@ -5,7 +5,7 @@ import type { Endpoint } from '~/typings'
 
 export const [endpoint, setEndpoint] = makePersisted(createSignal<Endpoint>(), {
   name: 'endpoint',
-  storage: localStorage,
+  storage: localStorage
 })
 
 export const useGraphqlClient = () => {
@@ -13,7 +13,7 @@ export const useGraphqlClient = () => {
 
   return createGraphQLClient(endpointValue.url, {
     headers: {
-      Authorization: `Bearer ${endpointValue.token}`,
-    },
+      Authorization: `Bearer ${endpointValue.token}`
+    }
   })
 }

@@ -5,5 +5,5 @@ import solid from 'vite-plugin-solid'
 export default defineConfig({
   base: './',
   resolve: { alias: { '~': '/src' } },
-  plugins: [devtools({ autoname: true }), solid(), splitVendorChunkPlugin()],
+  plugins: [devtools({ autoname: true }), solid(), splitVendorChunkPlugin()]
 })

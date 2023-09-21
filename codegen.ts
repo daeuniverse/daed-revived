@@ -5,8 +5,8 @@ export default {
   documents: 'src/**/*.{ts,tsx,graphql}',
   generates: {
     'src/gql/index.ts': {
-      plugins: ['typescript', 'typescript-operations', 'typed-document-node'],
-    },
+      plugins: ['typescript', 'typescript-operations', 'typed-document-node']
+    }
   },
-  hooks: { afterOneFileWrite: ['prettier -w'] },
+  hooks: { afterOneFileWrite: ['prettier -w'] }
 } satisfies CodegenConfig

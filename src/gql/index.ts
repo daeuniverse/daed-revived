@@ -12,7 +12,7 @@ export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
 }
 export type MakeEmpty<
   T extends { [key: string]: unknown },
-  K extends keyof T,
+  K extends keyof T
 > = { [_ in K]?: never }
 export type Incremental<T> =
   | T
@@ -486,7 +486,7 @@ export enum Policy {
   Min = 'min',
   MinAvg10 = 'min_avg10',
   MinMovingAvg = 'min_moving_avg',
-  Random = 'random',
+  Random = 'random'
 }
 
 export type PolicyParam = {
@@ -567,7 +567,7 @@ export type QueryTokenArgs = {
 }
 
 export enum Role {
-  Admin = 'admin',
+  Admin = 'admin'
 }
 
 export type Routing = {
@@ -678,14 +678,14 @@ export const UserDocument = {
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: 'username' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'avatar' } },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
+                { kind: 'Field', name: { kind: 'Name', value: 'avatar' } }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
 } as unknown as DocumentNode<UserQuery, UserQueryVariables>
 export const TokenDocument = {
   kind: 'Document',
@@ -699,30 +699,30 @@ export const TokenDocument = {
           kind: 'VariableDefinition',
           variable: {
             kind: 'Variable',
-            name: { kind: 'Name', value: 'username' },
+            name: { kind: 'Name', value: 'username' }
           },
           type: {
             kind: 'NonNullType',
             type: {
               kind: 'NamedType',
-              name: { kind: 'Name', value: 'String' },
-            },
-          },
+              name: { kind: 'Name', value: 'String' }
+            }
+          }
         },
         {
           kind: 'VariableDefinition',
           variable: {
             kind: 'Variable',
-            name: { kind: 'Name', value: 'password' },
+            name: { kind: 'Name', value: 'password' }
           },
           type: {
             kind: 'NonNullType',
             type: {
               kind: 'NamedType',
-              name: { kind: 'Name', value: 'String' },
-            },
-          },
-        },
+              name: { kind: 'Name', value: 'String' }
+            }
+          }
+        }
       ],
       selectionSet: {
         kind: 'SelectionSet',
@@ -736,21 +736,21 @@ export const TokenDocument = {
                 name: { kind: 'Name', value: 'username' },
                 value: {
                   kind: 'Variable',
-                  name: { kind: 'Name', value: 'username' },
-                },
+                  name: { kind: 'Name', value: 'username' }
+                }
               },
               {
                 kind: 'Argument',
                 name: { kind: 'Name', value: 'password' },
                 value: {
                   kind: 'Variable',
-                  name: { kind: 'Name', value: 'password' },
-                },
-              },
-            ],
-          },
-        ],
-      },
-    },
-  ],
+                  name: { kind: 'Name', value: 'password' }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
 } as unknown as DocumentNode<TokenQuery, TokenQueryVariables>
