@@ -1,0 +1,50 @@
+parser: '@typescript-eslint/parser'
+parserOptions:
+  ecmaFeatures:
+    jsx: true
+  ecmaVersion: latest
+  sourceType: module
+
+env:
+  node: true
+
+plugins:
+  - '@typescript-eslint'
+  - react
+
+extends:
+  - eslint:recommended
+  - plugin:@typescript-eslint/eslint-recommended
+  - plugin:@typescript-eslint/recommended
+  - plugin:prettier/recommended
+  - plugin:react/recommended
+  - plugin:react/jsx-runtime
+  - plugin:react-hooks/recommended
+  - plugin:@tanstack/eslint-plugin-query/recommended
+
+settings:
+  react:
+    version: detect
+
+rules:
+  padding-line-between-statements:
+    - error
+    - blankLine: always
+      prev: '*'
+      next: return
+    - blankLine: always
+      prev: '*'
+      next: if
+    - blankLine: always
+      prev: if
+      next: '*'
+    - blankLine: always
+      prev: '*'
+      next: switch
+    - blankLine: always
+      prev: switch
+      next: '*'
+
+  react/prop-types: off
+  react/display-name: off
+  react/self-closing-comp: error

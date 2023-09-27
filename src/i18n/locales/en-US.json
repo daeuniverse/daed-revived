@@ -1,0 +1,20 @@
+{
+  "form": {
+    "fields": {
+      "endpointURL": "Endpoint URL",
+      "username": "Username",
+      "password": "Password"
+    },
+    "descriptions": {
+      "pleaseEnter": "Please enter your {{fieldName}}",
+      "pleaseSelect": "Please select your {{fieldName}}"
+    }
+  },
+  "actions": {
+    "login": "Login",
+    "logout": "Logout",
+    "systemMode": "System",
+    "darkMode": "Dark",
+    "lightMode": "Light"
+  }
+}
