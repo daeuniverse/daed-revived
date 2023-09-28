@@ -11,10 +11,6 @@ export const initializeEditor = async () => {
   loader.config({ monaco })
 
   self.MonacoEnvironment = {
-    createTrustedTypesPolicy() {
-      return undefined
-    },
-
     getWorker(_, label) {
       if (label === 'json') {
         return new jsonWorker()

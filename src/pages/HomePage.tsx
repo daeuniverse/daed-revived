@@ -1,10 +1,9 @@
-import { Editor } from '@monaco-editor/react'
 import { useQuery } from '@tanstack/react-query'
 import { gql } from 'graphql-request'
 import { UserQuery } from '~/apis/gql'
+import { Editor } from '~/components/Editor'
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar'
 import { useGraphqlClient } from '~/contexts'
-import { options } from '~/editor/options'
 
 export const HomePage = () => {
   const graphqlClient = useGraphqlClient()
@@ -37,9 +36,13 @@ export const HomePage = () => {
 
       <Editor
         height="20vh"
-        theme="vs-dark"
-        options={options}
         language="routingA"
+        defaultValue={`
+pname(NetworkManager, systemd-resolved, dnsmasq) -> must_direct
+dip(geoip:private) -> direct
+dip(geoip:cn) -> direct
+domain(geosite:cn) -> direct 
+`.trim()}
       />
     </div>
   )

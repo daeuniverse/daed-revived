@@ -6,6 +6,8 @@ import {
   useState
 } from 'react'
 
+const MEDIA = '(prefers-color-scheme: dark)'
+
 type Theme = 'dark' | 'light' | 'system'
 
 type ThemeProviderProps = {
@@ -42,10 +44,7 @@ export function ThemeProvider({
     root.classList.remove('light', 'dark')
 
     if (theme === 'system') {
-      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)')
-        .matches
-        ? 'dark'
-        : 'light'
+      const systemTheme = window.matchMedia(MEDIA).matches ? 'dark' : 'light'
 
       root.classList.add(systemTheme)
       return
@@ -76,4 +75,23 @@ export const useTheme = () => {
     throw new Error('useTheme must be used within a ThemeProvider')
 
   return context
+}
+
+export const useResolvedTheme = () => {
+  const [resolvedTheme, setResolvedTheme] = useState<Exclude<Theme, 'system'>>()
+
+  const handleMediaQuery = (e: MediaQueryList | MediaQueryListEvent) =>
+    setResolvedTheme(e.matches ? 'dark' : 'light')
+
+  useEffect(() => {
+    const media = window.matchMedia(MEDIA)
+
+    handleMediaQuery(media)
+
+    media.addEventListener('change', handleMediaQuery)
+
+    return () => media.removeEventListener('change', handleMediaQuery)
+  }, [])
+
+  return resolvedTheme
 }
