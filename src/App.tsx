@@ -7,7 +7,6 @@ import {
   LanguagesIcon,
   Loader2Icon
 } from 'lucide-react'
-import { FC } from 'react'
 import { Outlet, Route, Routes } from 'react-router-dom'
 import { endpointInfoAtom } from '~/atoms'
 import { ModeToggle } from '~/components/ui/mode-toggle'
@@ -26,7 +25,7 @@ import {
 import { HomePage } from '~/pages/HomePage'
 import { SetupPage } from '~/pages/SetupPage'
 
-const EndpointInfoRequiredRoute: FC = () => {
+const EndpointInfoRequiredRoute = () => {
   const [endpointInfo] = useAtom(endpointInfoAtom)
 
   if (!endpointInfo.endpointURL || !endpointInfo.token) {
@@ -42,8 +41,8 @@ const EndpointInfoRequiredRoute: FC = () => {
 
 export const App = () => {
   return (
-    <div className="container relative flex h-screen flex-col">
-      <div className="sticky inset-x-0 top-0 flex items-center justify-between py-2">
+    <div className="relative flex h-screen flex-col">
+      <div className="sticky inset-x-0 top-0 flex items-center justify-between p-4">
         <NavigationMenu>
           <NavigationMenuList>
             <NavigationMenuItem>
@@ -100,7 +99,7 @@ export const App = () => {
         <ModeToggle />
       </div>
 
-      <div className="box-border flex w-full flex-1 flex-col overflow-y-auto overflow-x-hidden">
+      <div className="mx-auto box-border flex w-full max-w-screen-xl flex-1 flex-col overflow-y-auto overflow-x-hidden p-4">
         <Routes>
           <Route element={<EndpointInfoRequiredRoute />}>
             <Route path="/" element={<HomePage />} />

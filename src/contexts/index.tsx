@@ -1,6 +1,7 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { GraphQLClient } from 'graphql-request'
 import { useAtom } from 'jotai'
-import { createContext, FC, ReactNode, useContext, useMemo } from 'react'
+import { FC, ReactNode, createContext, useContext, useMemo } from 'react'
 import { endpointInfoAtom } from '~/atoms'
 
 const GraphqlClientContext = createContext<GraphQLClient>(
@@ -9,9 +10,7 @@ const GraphqlClientContext = createContext<GraphQLClient>(
 
 export const useGraphqlClient = () => useContext(GraphqlClientContext)
 
-export const GraphqlClientProvider: FC<{ children: ReactNode }> = ({
-  children
-}) => {
+const GraphqlClientProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [endpointInfo] = useAtom(endpointInfoAtom)
   const graphqlClient = useMemo(() => {
     const client = new GraphQLClient('')
@@ -31,5 +30,23 @@ export const GraphqlClientProvider: FC<{ children: ReactNode }> = ({
     <GraphqlClientContext.Provider value={graphqlClient}>
       {children}
     </GraphqlClientContext.Provider>
+  )
+}
+
+export const QueryClientRootProvider: FC<{ children: ReactNode }> = ({
+  children
+}) => {
+  return (
+    <GraphqlClientProvider>
+      <QueryClientProvider
+        client={
+          new QueryClient({
+            defaultOptions: { queries: { refetchOnWindowFocus: false } }
+          })
+        }
+      >
+        {children}
+      </QueryClientProvider>
+    </GraphqlClientProvider>
   )
 }
