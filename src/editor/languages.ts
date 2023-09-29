@@ -1,6 +1,6 @@
 import { languages } from 'monaco-editor'
 
-export const routingA: languages.IMonarchLanguage = {
+export const daeLang: languages.IMonarchLanguage = {
   // set defaultToken as `invalid` to turn on debug mode
   // defaultToken: 'invalid',
   ignoreCase: false,
@@ -36,6 +36,7 @@ export const routingA: languages.IMonarchLanguage = {
   tokenizer: {
     root: [
       [/@[a-zA-Z]\w*/, 'tag'],
+
       [
         /[a-zA-Z]\w*/,
         { cases: { '@keywords': 'keyword', '@default': 'identifier' } }

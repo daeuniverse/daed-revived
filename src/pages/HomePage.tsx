@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { gql } from 'graphql-request'
-import { UserQuery } from '~/apis/gql'
+import { useState } from 'react'
+import { UserQuery } from '~/apis/gql/graphql'
 import { Editor } from '~/components/Editor'
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar'
 import { useGraphqlClient } from '~/contexts'
@@ -21,6 +22,15 @@ export const HomePage = () => {
       `)
   })
 
+  const [editorValue, setEditorValue] = useState(
+    `
+pname(NetworkManager, systemd-resolved, dnsmasq) -> must_direct
+dip(geoip:private) -> direct
+dip(geoip:cn) -> direct
+domain(geosite:cn) -> direct 
+`.trim()
+  )
+
   return (
     <div className="space-y-6">
       <p>Name: {userQuery.data?.user.name}</p>
@@ -36,13 +46,9 @@ export const HomePage = () => {
 
       <Editor
         height="20vh"
-        language="routingA"
-        defaultValue={`
-pname(NetworkManager, systemd-resolved, dnsmasq) -> must_direct
-dip(geoip:private) -> direct
-dip(geoip:cn) -> direct
-domain(geosite:cn) -> direct 
-`.trim()}
+        language="dae"
+        value={editorValue}
+        onChange={(value) => value && setEditorValue(value)}
       />
     </div>
   )

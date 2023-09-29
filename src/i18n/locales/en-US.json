@@ -15,6 +15,8 @@
     "logout": "Logout",
     "systemMode": "System",
     "darkMode": "Dark",
-    "lightMode": "Light"
+    "lightMode": "Light",
+    "switchTheme": "Switch Theme",
+    "switchLanguage": "Switch Language"
   }
 }

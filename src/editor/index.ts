@@ -5,7 +5,7 @@ import cssWorker from 'monaco-editor/esm/vs/language/css/css.worker?worker'
 import htmlWorker from 'monaco-editor/esm/vs/language/html/html.worker?worker'
 import jsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker'
 import tsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker'
-import { routingA } from '~/editor/languages'
+import { daeLang } from '~/editor/languages'
 
 export const initializeEditor = async () => {
   loader.config({ monaco })
@@ -34,8 +34,8 @@ export const initializeEditor = async () => {
 
   const monacoInstance = await loader.init()
 
-  monacoInstance.languages.register({ id: 'routingA', extensions: ['dae'] })
-  monacoInstance.languages.setMonarchTokensProvider('routingA', routingA)
+  monacoInstance.languages.register({ id: 'dae', extensions: ['dae'] })
+  monacoInstance.languages.setMonarchTokensProvider('dae', daeLang)
 
   const themeGithub = await import('monaco-themes/themes/GitHub.json')
   const themeGithubLight = await import(

@@ -11,6 +11,7 @@ export default {
         '2xl': '1400px'
       }
     },
+    minWidth: { sm: '375px' },
     extend: {
       colors: {
         border: 'hsl(var(--border))',

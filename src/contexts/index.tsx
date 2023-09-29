@@ -1,7 +1,7 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { GraphQLClient } from 'graphql-request'
+import { ClientError, GraphQLClient } from 'graphql-request'
 import { useAtom } from 'jotai'
 import { FC, ReactNode, createContext, useContext, useMemo } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { endpointInfoAtom } from '~/atoms'
 
 const GraphqlClientContext = createContext<GraphQLClient>(
@@ -10,10 +10,25 @@ const GraphqlClientContext = createContext<GraphQLClient>(
 
 export const useGraphqlClient = () => useContext(GraphqlClientContext)
 
-const GraphqlClientProvider: FC<{ children: ReactNode }> = ({ children }) => {
-  const [endpointInfo] = useAtom(endpointInfoAtom)
+export const GraphqlClientProvider: FC<{ children: ReactNode }> = ({
+  children
+}) => {
+  const navigate = useNavigate()
+  const [endpointInfo, setEndpointInfo] = useAtom(endpointInfoAtom)
+
   const graphqlClient = useMemo(() => {
-    const client = new GraphQLClient('')
+    const client = new GraphQLClient('', {
+      responseMiddleware: (response) => {
+        const error = (response as ClientError).response?.errors?.[0]
+
+        if (error?.message === 'access denied') {
+          navigate('/setup')
+          setEndpointInfo({ endpointURL: '', token: '' })
+        }
+
+        return response
+      }
+    })
 
     if (endpointInfo.endpointURL) {
       client.setEndpoint(endpointInfo.endpointURL)
@@ -24,29 +39,11 @@ const GraphqlClientProvider: FC<{ children: ReactNode }> = ({ children }) => {
     }
 
     return client
-  }, [endpointInfo])
+  }, [endpointInfo.endpointURL, endpointInfo.token, navigate, setEndpointInfo])
 
   return (
     <GraphqlClientContext.Provider value={graphqlClient}>
       {children}
     </GraphqlClientContext.Provider>
-  )
-}
-
-export const QueryClientRootProvider: FC<{ children: ReactNode }> = ({
-  children
-}) => {
-  return (
-    <GraphqlClientProvider>
-      <QueryClientProvider
-        client={
-          new QueryClient({
-            defaultOptions: { queries: { refetchOnWindowFocus: false } }
-          })
-        }
-      >
-        {children}
-      </QueryClientProvider>
-    </GraphqlClientProvider>
   )
 }

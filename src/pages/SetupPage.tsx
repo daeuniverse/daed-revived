@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { z } from 'zod'
-import { TokenQuery } from '~/apis/gql'
+import { TokenQuery } from '~/apis/gql/graphql'
 import { endpointInfoAtom } from '~/atoms'
 import { Button } from '~/components/ui/button'
 import {

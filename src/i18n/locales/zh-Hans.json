@@ -15,6 +15,8 @@
     "logout": "登出",
     "systemMode": "系统",
     "darkMode": "暗黑",
-    "lightMode": "明亮"
+    "lightMode": "明亮",
+    "switchTheme": "切换主题",
+    "switchLanguage": "切换语言"
   }
 }

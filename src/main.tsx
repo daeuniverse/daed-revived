@@ -1,35 +1,45 @@
+import { QueryErrorResetBoundary } from '@tanstack/react-query'
 import ReactDOM from 'react-dom/client'
 import { ErrorBoundary } from 'react-error-boundary'
 import { HashRouter } from 'react-router-dom'
 import { App } from '~/App'
 import { Bootstrap } from '~/Bootstrap'
-import { GlobalFallbackComponent } from '~/components/GlobalFallbackComponent'
-import { ThemeProvider } from '~/components/ui/theme-provider'
-import { Toaster } from '~/components/ui/toaster'
-import { TooltipProvider } from '~/components/ui/tooltip'
-import { QueryClientRootProvider } from '~/contexts'
 import { DevTools } from '~/DevTools'
+import { Providers } from '~/Providers'
+import { GlobalFallbackComponent } from '~/components/GlobalFallbackComponent'
+import { Toaster } from '~/components/ui/toaster'
 
+import { Suspense } from 'react'
 import '~/index.css'
 
 const root = document.getElementById('root')!
 
 ReactDOM.createRoot(root).render(
-  <HashRouter>
-    <QueryClientRootProvider>
-      <ThemeProvider defaultTheme="system" storageKey="theme">
-        <TooltipProvider>
-          <ErrorBoundary FallbackComponent={GlobalFallbackComponent}>
-            <Bootstrap>
-              <App />
-            </Bootstrap>
-          </ErrorBoundary>
+  <Suspense>
+    <HashRouter>
+      <Providers>
+        <QueryErrorResetBoundary>
+          {({ reset }) => (
+            <ErrorBoundary
+              onReset={reset}
+              fallbackRender={({ resetErrorBoundary, error }) => (
+                <GlobalFallbackComponent
+                  resetErrorBoundary={resetErrorBoundary}
+                  error={error}
+                />
+              )}
+            >
+              <Bootstrap>
+                <App />
+              </Bootstrap>
 
-          <Toaster />
-        </TooltipProvider>
+              <Toaster />
 
-        {import.meta.env.DEV && <DevTools />}
-      </ThemeProvider>
-    </QueryClientRootProvider>
-  </HashRouter>
+              {import.meta.env.DEV && <DevTools />}
+            </ErrorBoundary>
+          )}
+        </QueryErrorResetBoundary>
+      </Providers>
+    </HashRouter>
+  </Suspense>
 )
