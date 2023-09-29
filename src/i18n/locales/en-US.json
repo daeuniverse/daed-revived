@@ -18,5 +18,12 @@
     "lightMode": "Light",
     "switchTheme": "Switch Theme",
     "switchLanguage": "Switch Language"
+  },
+  "primitives": {
+    "routing": "Routing",
+    "dns": "DNS",
+    "config": "Config",
+    "orchestrate": "Orchestrate",
+    "general": "General"
   }
 }

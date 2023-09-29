@@ -1,11 +1,8 @@
+import { SelectIcon } from '@radix-ui/react-select'
+import { EditIcon, Trash2Icon } from 'lucide-react'
 import { useConfigsQuery } from '~/apis/query'
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle
-} from '~/components/ui/card'
+import { Button } from '~/components/ui/button'
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '~/components/ui/card'
 
 export const ConfigPage = () => {
   const configsQuery = useConfigsQuery()
@@ -21,11 +18,24 @@ export const ConfigPage = () => {
           </CardHeader>
 
           <CardContent>
-            <p>Config Content</p>
+            <code>
+              <pre>{JSON.stringify(config.global, null, 2)}</pre>
+            </code>
           </CardContent>
 
-          <CardFooter>
-            <p>Config Footer</p>
+          <CardFooter className="gap-2">
+            <Button className="gap-2">
+              <SelectIcon className="w-4" />
+              Select
+            </Button>
+            <Button variant="secondary" className="gap-2">
+              <EditIcon className="w-4" />
+              Edit
+            </Button>
+            <Button variant="destructive" className="gap-2">
+              <Trash2Icon className="w-4" />
+              Remove
+            </Button>
           </CardFooter>
         </Card>
       ))}

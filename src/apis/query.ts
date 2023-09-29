@@ -2,6 +2,32 @@ import { useQuery } from '@tanstack/react-query'
 import { graphql } from '~/apis/gql/gql'
 import { useGraphqlClient } from '~/contexts'
 
+export const useGetJSONStorageRequest = <T extends ArrayLike<string>>(paths: T) => {
+  const gqlClient = useGraphqlClient()
+
+  return useQuery({
+    queryKey: ['jsonStorage', paths],
+    queryFn: async () => {
+      const { jsonStorage } = await gqlClient.request(
+        graphql(`
+          query JsonStorage($paths: [String!]) {
+            jsonStorage(paths: $paths)
+          }
+        `),
+        { paths: paths as unknown as string[] }
+      )
+
+      return jsonStorage.reduce(
+        (prev, cur, index) => ({
+          ...prev,
+          [paths[index]]: cur
+        }),
+        {} as { [key in T[number]]: (typeof jsonStorage)[number] }
+      )
+    }
+  })
+}
+
 export const generalQueryKey = ['general']
 export const useGeneralQuery = () => {
   const gqlClient = useGraphqlClient()

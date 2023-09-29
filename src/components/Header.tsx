@@ -1,7 +1,10 @@
 import i18n from 'i18next'
-import { ActivityIcon, AlbumIcon, CogIcon, LanguagesIcon } from 'lucide-react'
+import { ActivityIcon, CogIcon, GlobeIcon, LanguagesIcon, NetworkIcon } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
+import { useUserQuery } from '~/apis/query'
+import { LogoText } from '~/components/LogoText'
+import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar'
 import { Button } from '~/components/ui/button'
 import { ModeToggle } from '~/components/ui/mode-toggle'
 import {
@@ -11,107 +14,56 @@ import {
   NavigationMenuList,
   navigationMenuTriggerStyle
 } from '~/components/ui/navigation-menu'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger
-} from '~/components/ui/tooltip'
+import { Tooltip, TooltipContent, TooltipTrigger } from '~/components/ui/tooltip'
 
 export const Header = () => {
   const { t } = useTranslation()
+  const userQuery = useUserQuery()
+
+  const navigationMenus = [
+    { name: t('primitives.orchestrate'), route: '/orchestrate', Icon: ActivityIcon },
+    { name: t('primitives.routing'), route: '/routing', Icon: NetworkIcon },
+    { name: t('primitives.dns'), route: '/dns', Icon: GlobeIcon },
+    { name: t('primitives.config'), route: '/config', Icon: CogIcon }
+  ]
 
   return (
-    <div className="flex items-center justify-center p-2 sm:p-4">
-      <div className="hidden w-1/2 sm:block">
-        <h1 className="justify-start bg-gradient-to-br from-amber-500 to-primary bg-clip-text text-2xl font-bold text-transparent">
-          <a
-            href="https://github.com/daeuniverse/daed"
-            target="_blank"
-            rel="noreferrer"
-          >
-            daed
-          </a>
-        </h1>
+    <div className="flex w-full items-center justify-between p-2 sm:justify-center sm:p-4">
+      <div className="hidden w-1/2 justify-start sm:block">
+        <LogoText />
       </div>
 
       <div className="flex-shrink-0">
         <NavigationMenu>
-          <NavigationMenuList className="flex items-center justify-center gap-2 space-x-0 sm:gap-6">
-            <NavigationMenuItem>
-              <Tooltip>
-                <TooltipTrigger>
-                  <Link
-                    className={navigationMenuTriggerStyle()}
-                    to="/orchestrate"
-                  >
-                    <NavigationMenuLink asChild>
-                      <ActivityIcon className="h-4 w-4" />
-                    </NavigationMenuLink>
-                  </Link>
-                </TooltipTrigger>
+          <NavigationMenuList className="flex items-center justify-center gap-0 space-x-0 sm:gap-6">
+            {navigationMenus.map((menu, index) => (
+              <NavigationMenuItem key={index}>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <Link className={navigationMenuTriggerStyle()} to={menu.route}>
+                      <NavigationMenuLink asChild>
+                        <menu.Icon className="w-4 flex-shrink-0 sm:w-6" />
+                      </NavigationMenuLink>
+                    </Link>
+                  </TooltipTrigger>
 
-                <TooltipContent>Orchestrate</TooltipContent>
-              </Tooltip>
-            </NavigationMenuItem>
-
-            <NavigationMenuItem>
-              <Tooltip>
-                <TooltipTrigger>
-                  <Link className={navigationMenuTriggerStyle()} to="/routing">
-                    <NavigationMenuLink asChild>
-                      <AlbumIcon className="h-4 w-4" />
-                    </NavigationMenuLink>
-                  </Link>
-                </TooltipTrigger>
-
-                <TooltipContent>Routing</TooltipContent>
-              </Tooltip>
-            </NavigationMenuItem>
-
-            <NavigationMenuItem>
-              <Tooltip>
-                <TooltipTrigger>
-                  <Link className={navigationMenuTriggerStyle()} to="/dns">
-                    <NavigationMenuLink asChild>
-                      <ActivityIcon className="h-4 w-4" />
-                    </NavigationMenuLink>
-                  </Link>
-                </TooltipTrigger>
-
-                <TooltipContent>DNS</TooltipContent>
-              </Tooltip>
-            </NavigationMenuItem>
-
-            <NavigationMenuItem>
-              <Tooltip>
-                <TooltipTrigger>
-                  <Link className={navigationMenuTriggerStyle()} to="/config">
-                    <NavigationMenuLink asChild>
-                      <CogIcon className="h-4 w-4" />
-                    </NavigationMenuLink>
-                  </Link>
-                </TooltipTrigger>
-
-                <TooltipContent>Config</TooltipContent>
-              </Tooltip>
-            </NavigationMenuItem>
+                  <TooltipContent>{menu.name}</TooltipContent>
+                </Tooltip>
+              </NavigationMenuItem>
+            ))}
           </NavigationMenuList>
         </NavigationMenu>
       </div>
 
-      <div className="inline-flex w-1/2 justify-end gap-2">
+      <div className="flex w-1/2 items-center justify-end gap-2">
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
               variant="outline"
               size="icon"
-              onClick={() =>
-                void i18n.changeLanguage(
-                  i18n.language === 'en-US' ? 'zh-Hans' : 'en-US'
-                )
-              }
+              onClick={() => void i18n.changeLanguage(i18n.language === 'en-US' ? 'zh-Hans' : 'en-US')}
             >
-              <LanguagesIcon className="h-4 w-4" />
+              <LanguagesIcon className="w-4" />
             </Button>
           </TooltipTrigger>
 
@@ -119,6 +71,12 @@ export const Header = () => {
         </Tooltip>
 
         <ModeToggle />
+
+        <Avatar>
+          {userQuery.data?.user.avatar && <AvatarImage src={userQuery.data.user.avatar} />}
+
+          <AvatarFallback>daed</AvatarFallback>
+        </Avatar>
       </div>
     </div>
   )

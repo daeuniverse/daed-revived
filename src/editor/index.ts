@@ -12,21 +12,13 @@ export const initializeEditor = async () => {
 
   self.MonacoEnvironment = {
     getWorker(_, label) {
-      if (label === 'json') {
-        return new jsonWorker()
-      }
+      if (label === 'json') return new jsonWorker()
 
-      if (label === 'css' || label === 'scss' || label === 'less') {
-        return new cssWorker()
-      }
+      if (label === 'css' || label === 'scss' || label === 'less') return new cssWorker()
 
-      if (label === 'html' || label === 'handlebars' || label === 'razor') {
-        return new htmlWorker()
-      }
+      if (label === 'html' || label === 'handlebars' || label === 'razor') return new htmlWorker()
 
-      if (label === 'typescript' || label === 'javascript') {
-        return new tsWorker()
-      }
+      if (label === 'typescript' || label === 'javascript') return new tsWorker()
 
       return new editorWorker()
     }
@@ -38,15 +30,8 @@ export const initializeEditor = async () => {
   monacoInstance.languages.setMonarchTokensProvider('dae', daeLang)
 
   const themeGithub = await import('monaco-themes/themes/GitHub.json')
-  const themeGithubLight = await import(
-    'monaco-themes/themes/GitHub Light.json'
-  )
-  monacoInstance.editor.defineTheme(
-    'github',
-    themeGithub as monaco.editor.IStandaloneThemeData
-  )
-  monacoInstance.editor.defineTheme(
-    'githubLight',
-    themeGithubLight as monaco.editor.IStandaloneThemeData
-  )
+  const themeGithubLight = await import('monaco-themes/themes/GitHub Light.json')
+
+  monacoInstance.editor.defineTheme('github', themeGithub as monaco.editor.IStandaloneThemeData)
+  monacoInstance.editor.defineTheme('githubLight', themeGithubLight as monaco.editor.IStandaloneThemeData)
 }

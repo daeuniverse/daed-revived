@@ -4,19 +4,16 @@ import { FC, ReactNode, createContext, useContext, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { endpointInfoAtom } from '~/atoms'
 
-const GraphqlClientContext = createContext<GraphQLClient>(
-  null as unknown as GraphQLClient
-)
+const GraphqlClientContext = createContext<GraphQLClient>(null as unknown as GraphQLClient)
 
 export const useGraphqlClient = () => useContext(GraphqlClientContext)
 
-export const GraphqlClientProvider: FC<{ children: ReactNode }> = ({
-  children
-}) => {
+export const GraphqlClientProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const navigate = useNavigate()
   const [endpointInfo, setEndpointInfo] = useAtom(endpointInfoAtom)
 
   const graphqlClient = useMemo(() => {
+    // noinspection JSUnusedGlobalSymbols
     const client = new GraphQLClient('', {
       responseMiddleware: (response) => {
         const error = (response as ClientError).response?.errors?.[0]
@@ -41,9 +38,5 @@ export const GraphqlClientProvider: FC<{ children: ReactNode }> = ({
     return client
   }, [endpointInfo.endpointURL, endpointInfo.token, navigate, setEndpointInfo])
 
-  return (
-    <GraphqlClientContext.Provider value={graphqlClient}>
-      {children}
-    </GraphqlClientContext.Provider>
-  )
+  return <GraphqlClientContext.Provider value={graphqlClient}>{children}</GraphqlClientContext.Provider>
 }

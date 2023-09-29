@@ -23,10 +23,7 @@ ReactDOM.createRoot(root).render(
             <ErrorBoundary
               onReset={reset}
               fallbackRender={({ resetErrorBoundary, error }) => (
-                <GlobalFallbackComponent
-                  resetErrorBoundary={resetErrorBoundary}
-                  error={error}
-                />
+                <GlobalFallbackComponent resetErrorBoundary={resetErrorBoundary} error={error} />
               )}
             >
               <Bootstrap>

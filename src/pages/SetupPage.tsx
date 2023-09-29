@@ -9,15 +9,7 @@ import { z } from 'zod'
 import { TokenQuery } from '~/apis/gql/graphql'
 import { endpointInfoAtom } from '~/atoms'
 import { Button } from '~/components/ui/button'
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage
-} from '~/components/ui/form'
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
 import { Input } from '~/components/ui/input'
 import { toast } from '~/components/ui/use-toast'
 import { useGraphqlClient } from '~/contexts'
@@ -46,36 +38,29 @@ export const SetupPage = () => {
       <Form {...form}>
         <form
           className="space-y-4"
-          onSubmit={form.handleSubmit(
-            async ({ endpointURL, username, password }) => {
-              graphqlClient.setEndpoint(endpointURL)
+          onSubmit={form.handleSubmit(async ({ endpointURL, username, password }) => {
+            graphqlClient.setEndpoint(endpointURL)
 
-              try {
-                const { token } = await graphqlClient.request<TokenQuery>(
-                  gql`
-                    query Token($username: String!, $password: String!) {
-                      token(username: $username, password: $password)
-                    }
-                  `,
-                  {
-                    username,
-                    password
+            try {
+              const { token } = await graphqlClient.request<TokenQuery>(
+                gql`
+                  query Token($username: String!, $password: String!) {
+                    token(username: $username, password: $password)
                   }
-                )
+                `,
+                {
+                  username,
+                  password
+                }
+              )
 
-                setEndpointInfo({
-                  endpointURL,
-                  token
-                })
+              setEndpointInfo({ endpointURL, token })
 
-                navigate('/')
-              } catch (err) {
-                toast({
-                  description: (err as Error).message
-                })
-              }
+              navigate('/')
+            } catch (err) {
+              toast({ description: (err as Error).message })
             }
-          )}
+          })}
         >
           <FormField
             name="endpointURL"
@@ -85,11 +70,7 @@ export const SetupPage = () => {
                 <FormLabel>{t('form.fields.endpointURL')}</FormLabel>
 
                 <FormControl>
-                  <Input
-                    type="url"
-                    placeholder="http://127.0.0.1:2023/graphql"
-                    {...field}
-                  />
+                  <Input type="url" placeholder="http://127.0.0.1:2023/graphql" {...field} />
                 </FormControl>
 
                 <FormDescription>
@@ -147,14 +128,8 @@ export const SetupPage = () => {
             )}
           />
 
-          <Button
-            className="w-full"
-            type="submit"
-            disabled={form.formState.isSubmitting}
-          >
-            {form.formState.isSubmitting && (
-              <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />
-            )}
+          <Button className="w-full gap-2" type="submit" disabled={form.formState.isSubmitting}>
+            {form.formState.isSubmitting && <Loader2Icon className="w-4 animate-spin" />}
 
             {t('actions.login')}
           </Button>

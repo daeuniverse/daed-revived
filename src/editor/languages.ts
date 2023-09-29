@@ -26,8 +26,7 @@ export const daeLang: languages.IMonarchLanguage = {
     'upstream'
   ],
 
-  escapes:
-    /\\(?:[abfnrtv\\"']|x[0-9A-Fa-f]{1,4}|u[0-9A-Fa-f]{4}|U[0-9A-Fa-f]{8})/,
+  escapes: /\\(?:[abfnrtv\\"']|x[0-9A-Fa-f]{1,4}|u[0-9A-Fa-f]{4}|U[0-9A-Fa-f]{8})/,
 
   symbols: /[->&!:,]+/,
 
@@ -37,10 +36,7 @@ export const daeLang: languages.IMonarchLanguage = {
     root: [
       [/@[a-zA-Z]\w*/, 'tag'],
 
-      [
-        /[a-zA-Z]\w*/,
-        { cases: { '@keywords': 'keyword', '@default': 'identifier' } }
-      ],
+      [/[a-zA-Z]\w*/, { cases: { '@keywords': 'keyword', '@default': 'identifier' } }],
 
       { include: '@whitespace' },
 

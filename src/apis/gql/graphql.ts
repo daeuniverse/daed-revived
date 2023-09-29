@@ -11,10 +11,7 @@ export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
   [SubKey in K]: Maybe<T[SubKey]>
 }
-export type MakeEmpty<
-  T extends { [key: string]: unknown },
-  K extends keyof T
-> = { [_ in K]?: never }
+export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never }
 export type Incremental<T> =
   | T
   | {
@@ -642,6 +639,15 @@ export type GlobalInput = {
   wanInterface?: InputMaybe<Array<Scalars['String']['input']>>
 }
 
+export type JsonStorageQueryVariables = Exact<{
+  paths?: InputMaybe<Array<Scalars['String']['input']> | Scalars['String']['input']>
+}>
+
+export type JsonStorageQuery = {
+  __typename?: 'Query'
+  jsonStorage: Array<string>
+}
+
 export type GeneralQueryVariables = Exact<{
   interfacesUp?: InputMaybe<Scalars['Boolean']['input']>
 }>
@@ -848,6 +854,54 @@ export type TokenQueryVariables = Exact<{
 
 export type TokenQuery = { __typename?: 'Query'; token: string }
 
+export const JsonStorageDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'JsonStorage' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'paths' }
+          },
+          type: {
+            kind: 'ListType',
+            type: {
+              kind: 'NonNullType',
+              type: {
+                kind: 'NamedType',
+                name: { kind: 'Name', value: 'String' }
+              }
+            }
+          }
+        }
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'jsonStorage' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'paths' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'paths' }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<JsonStorageQuery, JsonStorageQueryVariables>
 export const GeneralDocument = {
   kind: 'Document',
   definitions: [
@@ -1335,9 +1389,7 @@ export const RoutingsDocument = {
                   name: { kind: 'Name', value: 'routing' },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'string' } }
-                    ]
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'string' } }]
                   }
                 }
               ]

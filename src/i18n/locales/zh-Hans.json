@@ -18,5 +18,12 @@
     "lightMode": "明亮",
     "switchTheme": "切换主题",
     "switchLanguage": "切换语言"
+  },
+  "primitives": {
+    "routing": "路由",
+    "dns": "域名解析",
+    "config": "配置",
+    "orchestrate": "编排",
+    "general": "常规"
   }
 }

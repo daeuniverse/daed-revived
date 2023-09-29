@@ -13,6 +13,8 @@ import * as types from './graphql'
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
+  '\n          query JsonStorage($paths: [String!]) {\n            jsonStorage(paths: $paths)\n          }\n        ':
+    types.JsonStorageDocument,
   '\n          query General($interfacesUp: Boolean) {\n            general {\n              dae {\n                running\n                modified\n                version\n              }\n\n              interfaces(up: $interfacesUp) {\n                name\n                ifindex\n                ip\n                flag {\n                  default {\n                    ipVersion\n                    gateway\n                    source\n                  }\n                }\n              }\n            }\n          }\n        ':
     types.GeneralDocument,
   '\n          query Nodes {\n            nodes {\n              edges {\n                id\n                name\n                link\n                address\n                protocol\n                tag\n              }\n            }\n          }\n        ':
@@ -31,7 +33,7 @@ const documents = {
     types.UserDocument,
   '\n        query User {\n          user {\n            username\n            name\n            avatar\n          }\n        }\n      ':
     types.UserDocument,
-  '\n                    query Token($username: String!, $password: String!) {\n                      token(username: $username, password: $password)\n                    }\n                  ':
+  '\n                  query Token($username: String!, $password: String!) {\n                    token(username: $username, password: $password)\n                  }\n                ':
     types.TokenDocument
 }
 
@@ -49,6 +51,12 @@ const documents = {
  */
 export function graphql(source: string): unknown
 
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n          query JsonStorage($paths: [String!]) {\n            jsonStorage(paths: $paths)\n          }\n        '
+): (typeof documents)['\n          query JsonStorage($paths: [String!]) {\n            jsonStorage(paths: $paths)\n          }\n        ']
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -107,12 +115,16 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n                    query Token($username: String!, $password: String!) {\n                      token(username: $username, password: $password)\n                    }\n                  '
-): (typeof documents)['\n                    query Token($username: String!, $password: String!) {\n                      token(username: $username, password: $password)\n                    }\n                  ']
+  source: '\n                  query Token($username: String!, $password: String!) {\n                    token(username: $username, password: $password)\n                  }\n                '
+): (typeof documents)['\n                  query Token($username: String!, $password: String!) {\n                    token(username: $username, password: $password)\n                  }\n                ']
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {}
 }
 
-export type DocumentType<TDocumentNode extends DocumentNode<any, any>> =
-  TDocumentNode extends DocumentNode<infer TType, any> ? TType : never
+export type DocumentType<TDocumentNode extends DocumentNode<any, any>> = TDocumentNode extends DocumentNode<
+  infer TType,
+  any
+>
+  ? TType
+  : never

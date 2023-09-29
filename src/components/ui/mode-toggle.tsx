@@ -1,12 +1,7 @@
 import { Moon, Sun } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { Button } from '~/components/ui/button'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger
-} from '~/components/ui/dropdown-menu'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '~/components/ui/dropdown-menu'
 import { useTheme } from '~/components/ui/theme-provider'
 
 export function ModeToggle() {
@@ -24,17 +19,11 @@ export function ModeToggle() {
       </DropdownMenuTrigger>
 
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme('light')}>
-          {t('actions.lightMode')}
-        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setTheme('light')}>{t('actions.lightMode')}</DropdownMenuItem>
 
-        <DropdownMenuItem onClick={() => setTheme('dark')}>
-          {t('actions.darkMode')}
-        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setTheme('dark')}>{t('actions.darkMode')}</DropdownMenuItem>
 
-        <DropdownMenuItem onClick={() => setTheme('system')}>
-          {t('actions.systemMode')}
-        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setTheme('system')}>{t('actions.systemMode')}</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   )

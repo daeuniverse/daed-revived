@@ -4,23 +4,11 @@ import { ThemeProvider } from '~/components/ui/theme-provider'
 import { TooltipProvider } from '~/components/ui/tooltip'
 import { GraphqlClientProvider } from '~/contexts'
 
-export const QueryClientRootProvider: FC<{ children: ReactNode }> = ({
-  children
-}) => {
+export const QueryClientRootProvider: FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <GraphqlClientProvider>
       <QueryClientProvider
-        client={
-          new QueryClient({
-            defaultOptions: {
-              queries: {
-                cacheTime: 1000 * 60 * 60 * 24,
-                refetchOnWindowFocus: false,
-                suspense: true
-              }
-            }
-          })
-        }
+        client={new QueryClient({ defaultOptions: { queries: { refetchOnWindowFocus: false, suspense: true } } })}
       >
         {children}
       </QueryClientProvider>

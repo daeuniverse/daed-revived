@@ -37,19 +37,12 @@ domain(geosite:cn) -> direct
       <p>Username: {userQuery.data?.user.username}</p>
 
       <Avatar>
-        {userQuery.data?.user.avatar && (
-          <AvatarImage src={userQuery.data.user.avatar} />
-        )}
+        {userQuery.data?.user.avatar && <AvatarImage src={userQuery.data.user.avatar} />}
 
         <AvatarFallback>{userQuery.data?.user.username[0]}</AvatarFallback>
       </Avatar>
 
-      <Editor
-        height="20vh"
-        language="dae"
-        value={editorValue}
-        onChange={(value) => value && setEditorValue(value)}
-      />
+      <Editor height="20vh" language="dae" value={editorValue} onChange={(value) => value && setEditorValue(value)} />
     </div>
   )
 }
