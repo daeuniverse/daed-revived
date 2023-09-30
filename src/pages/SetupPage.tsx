@@ -1,7 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { gql } from 'graphql-request'
 import { useAtom } from 'jotai'
-import { Loader2Icon } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -128,9 +127,7 @@ export const SetupPage = () => {
             )}
           />
 
-          <Button className="w-full gap-2" type="submit" disabled={form.formState.isSubmitting}>
-            {form.formState.isSubmitting && <Loader2Icon className="w-4 animate-spin" />}
-
+          <Button className="w-full" type="submit" loading={form.formState.isSubmitting}>
             {t('actions.login')}
           </Button>
         </form>

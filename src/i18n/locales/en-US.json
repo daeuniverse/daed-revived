@@ -17,7 +17,14 @@
     "darkMode": "Dark",
     "lightMode": "Light",
     "switchTheme": "Switch Theme",
-    "switchLanguage": "Switch Language"
+    "switchLanguage": "Switch Language",
+    "select": "Select",
+    "edit": "Edit",
+    "remove": "Remove",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "reset": "Reset",
+    "submit": "Submit"
   },
   "primitives": {
     "routing": "Routing",

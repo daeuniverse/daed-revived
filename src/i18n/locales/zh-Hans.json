@@ -17,7 +17,14 @@
     "darkMode": "暗黑",
     "lightMode": "明亮",
     "switchTheme": "切换主题",
-    "switchLanguage": "切换语言"
+    "switchLanguage": "切换语言",
+    "select": "选择",
+    "edit": "编辑",
+    "remove": "移除",
+    "cancel": "取消",
+    "confirm": "确定",
+    "reset": "重置",
+    "submit": "提交"
   },
   "primitives": {
     "routing": "路由",
