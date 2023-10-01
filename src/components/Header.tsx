@@ -39,7 +39,7 @@ export const Header = () => {
             {navigationMenus.map((menu, index) => (
               <NavigationMenuItem key={index}>
                 <Tooltip>
-                  <TooltipTrigger>
+                  <TooltipTrigger asChild>
                     <Link className={navigationMenuTriggerStyle()} to={menu.route}>
                       <NavigationMenuLink asChild>
                         <menu.Icon className="w-4 flex-shrink-0 sm:w-6" />
