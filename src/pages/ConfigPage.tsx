@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useConfigsQuery, useGetJSONStorageRequest } from '~/apis/query'
+import { CodeBlock } from '~/components/CodeBlock'
 import { Badge } from '~/components/ui/badge'
 import { Button } from '~/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '~/components/ui/card'
@@ -43,9 +44,7 @@ export const ConfigPage = () => {
             </CardHeader>
 
             <CardContent>
-              <code>
-                <pre>{JSON.stringify(config.global, null, 2)}</pre>
-              </code>
+              <CodeBlock language="json">{JSON.stringify(config, null, 2)}</CodeBlock>
             </CardContent>
 
             <CardFooter className="gap-2">
