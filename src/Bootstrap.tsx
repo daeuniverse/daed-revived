@@ -18,8 +18,10 @@ export const Bootstrap: FC<{ children: ReactNode }> = ({ children }) => {
 
   if (loading) {
     return (
-      <div className="flex h-screen w-screen flex-1 flex-col items-center justify-center">
+      <div className="flex h-screen w-screen flex-1 flex-col items-center justify-center gap-4">
         <LoadingSpinner />
+
+        <span>Initializing assets</span>
       </div>
     )
   }

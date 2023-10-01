@@ -21,6 +21,7 @@ import { GroupPage } from '~/pages/GroupPage'
 import { HomePage } from '~/pages/HomePage'
 import { NodePage } from '~/pages/NodePage'
 import { NotFound } from '~/pages/NotFound'
+import { OrchestratePage } from '~/pages/OrchestratePage'
 import { RoutingPage } from '~/pages/RoutingPage'
 import { SetupPage } from '~/pages/SetupPage'
 import { SubscriptionPage } from '~/pages/SubscriptionPage'
@@ -29,7 +30,7 @@ const LoadingPage: FC<{ children?: ReactNode }> = ({ children }) => (
   <div className="flex flex-1 flex-col items-center justify-center gap-4">
     <LoadingSpinner />
 
-    {children}
+    <span>{children}</span>
   </div>
 )
 
@@ -55,7 +56,7 @@ const InitializeData: FC<{ children: ReactNode }> = ({ children }) => {
     dnssQuery.isInitialLoading ||
     configsQuery.isInitialLoading
   ) {
-    return <LoadingPage>Initializing</LoadingPage>
+    return <LoadingPage>Initializing data</LoadingPage>
   }
 
   return children
@@ -89,6 +90,7 @@ export const App = () => {
 
           <Route element={<InitializeRoutes />}>
             <Route index element={<HomePage />} />
+            <Route path="/orchestrate" element={<OrchestratePage />} />
             <Route path="/config" element={<ConfigPage />} />
             <Route path="/dns" element={<DNSPage />} />
             <Route path="/routing" element={<RoutingPage />} />
