@@ -1,5 +1,17 @@
 import { useAtom } from 'jotai'
+import { FC, ReactNode } from 'react'
 import { Outlet, Route, Routes } from 'react-router-dom'
+import {
+  useConfigsQuery,
+  useDNSsQuery,
+  useDefaultResourcesQuery,
+  useGeneralQuery,
+  useGroupsQuery,
+  useNodesQuery,
+  useRoutingsQuery,
+  useSubscriptionsQuery,
+  useUserQuery
+} from '~/apis/query'
 import { endpointInfoAtom } from '~/atoms'
 import { Header } from '~/components/Header'
 import { LoadingSpinner } from '~/components/LoadingSpinner'
@@ -13,19 +25,55 @@ import { RoutingPage } from '~/pages/RoutingPage'
 import { SetupPage } from '~/pages/SetupPage'
 import { SubscriptionPage } from '~/pages/SubscriptionPage'
 
+const LoadingPage: FC<{ children?: ReactNode }> = ({ children }) => (
+  <div className="flex flex-1 flex-col items-center justify-center gap-4">
+    <LoadingSpinner />
+
+    {children}
+  </div>
+)
+
+const InitializeData: FC<{ children: ReactNode }> = ({ children }) => {
+  const defaultResourcesQuery = useDefaultResourcesQuery()
+  const userQuery = useUserQuery()
+  const generalQuery = useGeneralQuery()
+  const groupsQuery = useGroupsQuery()
+  const subscriptionsQuery = useSubscriptionsQuery()
+  const nodesQuery = useNodesQuery()
+  const routingsQuery = useRoutingsQuery()
+  const dnssQuery = useDNSsQuery()
+  const configsQuery = useConfigsQuery()
+
+  if (
+    defaultResourcesQuery.isInitialLoading ||
+    userQuery.isInitialLoading ||
+    generalQuery.isInitialLoading ||
+    groupsQuery.isInitialLoading ||
+    subscriptionsQuery.isInitialLoading ||
+    nodesQuery.isInitialLoading ||
+    routingsQuery.isInitialLoading ||
+    dnssQuery.isInitialLoading ||
+    configsQuery.isInitialLoading
+  ) {
+    return <LoadingPage>Initializing</LoadingPage>
+  }
+
+  return children
+}
+
 const InitializeRoutes = () => {
   const [endpointInfo] = useAtom(endpointInfoAtom)
   const endpointNotReady = !endpointInfo.endpointURL || !endpointInfo.token
 
   if (endpointNotReady) {
-    return (
-      <div className="flex flex-1 items-center justify-center">
-        <LoadingSpinner />
-      </div>
-    )
+    return <LoadingPage>Initializing Endpoint</LoadingPage>
   }
 
-  return <Outlet />
+  return (
+    <InitializeData>
+      <Outlet />
+    </InitializeData>
+  )
 }
 
 export const App = () => {

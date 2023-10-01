@@ -1,3 +1,5 @@
+// noinspection JSUnusedGlobalSymbols
+
 import { CodegenConfig } from '@graphql-codegen/cli'
 
 export default {

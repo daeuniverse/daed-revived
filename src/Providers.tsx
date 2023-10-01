@@ -8,7 +8,14 @@ export const QueryClientRootProvider: FC<{ children: ReactNode }> = ({ children 
   return (
     <GraphqlClientProvider>
       <QueryClientProvider
-        client={new QueryClient({ defaultOptions: { queries: { refetchOnWindowFocus: false, suspense: true } } })}
+        client={
+          new QueryClient({
+            defaultOptions: {
+              queries: { refetchOnWindowFocus: false, useErrorBoundary: true },
+              mutations: { useErrorBoundary: true }
+            }
+          })
+        }
       >
         {children}
       </QueryClientProvider>

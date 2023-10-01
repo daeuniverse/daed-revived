@@ -18,15 +18,15 @@ export const useGetJSONStorageRequest = <T extends ArrayLike<string>>(paths: T) 
       )
 
       return jsonStorage.reduce(
-        (prev, cur, index) => ({
-          ...prev,
-          [paths[index]]: cur
-        }),
+        (prev, cur, index) => ({ ...prev, [paths[index]]: cur }),
         {} as { [key in T[number]]: (typeof jsonStorage)[number] }
       )
     }
   })
 }
+
+export const useDefaultResourcesQuery = () =>
+  useGetJSONStorageRequest(['defaultConfigID', 'defaultDNSID', 'defaultGroupID', 'defaultRoutingID'] as const)
 
 export const generalQueryKey = ['general']
 export const useGeneralQuery = () => {

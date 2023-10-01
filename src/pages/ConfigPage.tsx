@@ -29,7 +29,7 @@ export const ConfigPage = () => {
     <div className="space-y-6">
       <p>Configs</p>
 
-      <div className="grid grid-cols-2">
+      <div>
         {configsQuery.data?.configs.map((config, index) => (
           <Card key={index}>
             <CardHeader>
