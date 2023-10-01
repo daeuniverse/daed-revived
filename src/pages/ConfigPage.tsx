@@ -1,8 +1,10 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import { SelectIcon } from '@radix-ui/react-select'
 import { EditIcon, Trash2Icon } from 'lucide-react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
+import { z } from 'zod'
 import { useRemoveConfigMutation, useSelectConfigMutation } from '~/apis/mutation'
 import { useConfigsQuery, useGetJSONStorageRequest } from '~/apis/query'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '~/components/ui/accordion'
@@ -20,10 +22,29 @@ import {
 } from '~/components/ui/dialog'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
 import { Input } from '~/components/ui/input'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select'
+import { Switch } from '~/components/ui/switch'
+import { cn } from '~/lib/ui'
 
 export const ConfigPage = () => {
   const { t } = useTranslation()
-  const form = useForm()
+  const schema = z.object({
+    tproxyPort: z.number(),
+    tproxyPortProtect: z.boolean(),
+    soMarkFromDae: z.number(),
+    logLevel: z.string(),
+    disableWaitingNetwork: z.boolean()
+  })
+  const form = useForm<z.infer<typeof schema>>({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      tproxyPort: 12345,
+      tproxyPortProtect: true,
+      soMarkFromDae: 80,
+      logLevel: 'info',
+      disableWaitingNetwork: true
+    }
+  })
   const defaultConfigIdQuery = useGetJSONStorageRequest(['defaultConfigID'] as const)
   const configsQuery = useConfigsQuery()
   const isDefault = (id: string) => id === defaultConfigIdQuery.data?.defaultConfigID
@@ -35,15 +56,15 @@ export const ConfigPage = () => {
     <div className="space-y-6">
       <p>Configs</p>
 
-      <div className="grid grid-cols-2">
+      <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
         {configsQuery.data?.configs.map((config, index) => (
-          <Card key={index}>
+          <Card key={index} className={cn(config.selected && 'border-primary')}>
             <CardHeader>
               <CardTitle className="uppercase">{config.name}</CardTitle>
 
               {isDefault(config.id) && (
                 <CardDescription>
-                  <Badge>default</Badge>
+                  <Badge>{t('primitives.default')}</Badge>
                 </CardDescription>
               )}
             </CardHeader>
@@ -80,42 +101,122 @@ export const ConfigPage = () => {
                         <DialogDescription>{config.id}</DialogDescription>
                       </DialogHeader>
 
-                      <div className="py-4">
+                      <div className="py-2">
                         <Accordion type="multiple">
                           <AccordionItem value="software-options">
-                            <AccordionTrigger>Software Options</AccordionTrigger>
+                            <AccordionTrigger>{t('primitives.softwareOptions')}</AccordionTrigger>
 
                             <AccordionContent>
-                              <FormField
-                                name="password"
-                                control={form.control}
-                                render={({ field }) => (
-                                  <FormItem>
-                                    <FormLabel>{t('form.fields.password')}</FormLabel>
+                              <div className="space-y-4">
+                                <FormField
+                                  name="tproxyPort"
+                                  control={form.control}
+                                  render={({ field }) => (
+                                    <FormItem>
+                                      <FormLabel>{t('form.fields.tproxyPort')}</FormLabel>
 
-                                    <FormControl>
-                                      <Input type="number" placeholder="daeuniverse" {...field} />
-                                    </FormControl>
+                                      <FormDescription>{t('form.descriptions.tproxyPort')}</FormDescription>
 
-                                    <FormDescription>
-                                      {t('form.descriptions.pleaseEnter', {
-                                        fieldName: t('form.fields.password')
-                                      })}
-                                    </FormDescription>
+                                      <FormControl>
+                                        <Input type="number" placeholder="12345" {...field} />
+                                      </FormControl>
 
-                                    <FormMessage />
-                                  </FormItem>
-                                )}
-                              />
+                                      <FormMessage />
+                                    </FormItem>
+                                  )}
+                                />
+
+                                <FormField
+                                  name="tproxyPortProtect"
+                                  control={form.control}
+                                  render={({ field }) => (
+                                    <FormItem>
+                                      <FormLabel>{t('form.fields.tproxyPortProtect')}</FormLabel>
+
+                                      <FormDescription>{t('form.descriptions.tproxyPortProtect')}</FormDescription>
+
+                                      <FormControl>
+                                        <Switch checked={field.value} onCheckedChange={field.onChange} />
+                                      </FormControl>
+
+                                      <FormMessage />
+                                    </FormItem>
+                                  )}
+                                />
+
+                                <FormField
+                                  name="soMarkFromDae"
+                                  control={form.control}
+                                  render={({ field }) => (
+                                    <FormItem>
+                                      <FormLabel>{t('form.fields.soMarkFromDae')}</FormLabel>
+
+                                      <FormDescription>{t('form.descriptions.soMarkFromDae')}</FormDescription>
+
+                                      <FormControl>
+                                        <Input type="number" {...field} />
+                                      </FormControl>
+
+                                      <FormMessage />
+                                    </FormItem>
+                                  )}
+                                />
+
+                                <FormField
+                                  name="logLevel"
+                                  control={form.control}
+                                  render={({ field }) => (
+                                    <FormItem>
+                                      <FormLabel>{t('form.fields.logLevel')}</FormLabel>
+
+                                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                        <FormControl>
+                                          <SelectTrigger>
+                                            <SelectValue />
+                                          </SelectTrigger>
+                                        </FormControl>
+
+                                        <SelectContent>
+                                          <SelectItem value="error">{t('form.fields.logLevels.error')}</SelectItem>
+                                          <SelectItem value="warn">{t('form.fields.logLevels.warn')}</SelectItem>
+                                          <SelectItem value="info">{t('form.fields.logLevels.info')}</SelectItem>
+                                          <SelectItem value="debug">{t('form.fields.logLevels.debug')}</SelectItem>
+                                          <SelectItem value="trace">{t('form.fields.logLevels.trace')}</SelectItem>
+                                        </SelectContent>
+                                      </Select>
+
+                                      <FormMessage />
+                                    </FormItem>
+                                  )}
+                                />
+
+                                <FormField
+                                  name="disableWaitingNetwork"
+                                  control={form.control}
+                                  render={({ field }) => (
+                                    <FormItem>
+                                      <FormLabel>{t('form.fields.disableWaitingNetwork')}</FormLabel>
+
+                                      <FormDescription>{t('form.descriptions.disableWaitingNetwork')}</FormDescription>
+
+                                      <FormControl>
+                                        <Switch checked={field.value} onCheckedChange={field.onChange} />
+                                      </FormControl>
+
+                                      <FormMessage />
+                                    </FormItem>
+                                  )}
+                                />
+                              </div>
                             </AccordionContent>
                           </AccordionItem>
 
                           <AccordionItem value="interface-and-kernel-options">
-                            <AccordionTrigger>Interface and Kernel Options</AccordionTrigger>
+                            <AccordionTrigger>{t('primitives.interfaceAndKernelOptions')}</AccordionTrigger>
 
                             <AccordionContent>
                               <FormField
-                                name="password"
+                                name="tproxyPort"
                                 control={form.control}
                                 render={({ field }) => (
                                   <FormItem>
@@ -141,7 +242,9 @@ export const ConfigPage = () => {
                       </div>
 
                       <DialogFooter>
-                        <Button type="reset">{t('actions.reset')}</Button>
+                        <Button type="reset" variant="secondary" onClick={() => form.reset()}>
+                          {t('actions.reset')}
+                        </Button>
 
                         <Button type="submit" loading={form.formState.isSubmitting}>
                           {t('actions.submit')}

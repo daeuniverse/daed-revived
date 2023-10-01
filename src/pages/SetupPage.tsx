@@ -19,14 +19,14 @@ export const SetupPage = () => {
   const graphqlClient = useGraphqlClient()
   const navigate = useNavigate()
 
-  const formSchema = z.object({
+  const schema = z.object({
     endpointURL: z.string().url().nonempty(),
     username: z.string().min(4).max(20),
     password: z.string().min(6).max(20)
   })
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof schema>>({
+    resolver: zodResolver(schema),
     defaultValues: { endpointURL: '', username: '', password: '' }
   })
 
@@ -68,15 +68,15 @@ export const SetupPage = () => {
               <FormItem>
                 <FormLabel>{t('form.fields.endpointURL')}</FormLabel>
 
-                <FormControl>
-                  <Input type="url" placeholder="http://127.0.0.1:2023/graphql" {...field} />
-                </FormControl>
-
                 <FormDescription>
                   {t('form.descriptions.pleaseEnter', {
                     fieldName: t('form.fields.endpointURL')
                   })}
                 </FormDescription>
+
+                <FormControl>
+                  <Input type="url" placeholder="http://127.0.0.1:2023/graphql" {...field} />
+                </FormControl>
 
                 <FormMessage />
               </FormItem>
@@ -90,15 +90,15 @@ export const SetupPage = () => {
               <FormItem>
                 <FormLabel>{t('form.fields.username')}</FormLabel>
 
-                <FormControl>
-                  <Input type="text" placeholder="daed" {...field} />
-                </FormControl>
-
                 <FormDescription>
                   {t('form.descriptions.pleaseEnter', {
                     fieldName: t('form.fields.username')
                   })}
                 </FormDescription>
+
+                <FormControl>
+                  <Input type="text" placeholder="daed" {...field} />
+                </FormControl>
 
                 <FormMessage />
               </FormItem>
@@ -112,15 +112,15 @@ export const SetupPage = () => {
               <FormItem>
                 <FormLabel>{t('form.fields.password')}</FormLabel>
 
-                <FormControl>
-                  <Input type="password" placeholder="daeuniverse" {...field} />
-                </FormControl>
-
                 <FormDescription>
                   {t('form.descriptions.pleaseEnter', {
                     fieldName: t('form.fields.password')
                   })}
                 </FormDescription>
+
+                <FormControl>
+                  <Input type="password" placeholder="daeuniverse" {...field} />
+                </FormControl>
 
                 <FormMessage />
               </FormItem>

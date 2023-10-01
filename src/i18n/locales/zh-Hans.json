@@ -3,11 +3,27 @@
     "fields": {
       "endpointURL": "接口地址",
       "username": "用户名",
-      "password": "密码"
+      "password": "密码",
+      "tproxyPort": "透明代理端口",
+      "tproxyPortProtect": "透明代理端口保护",
+      "soMarkFromDae": "为 dae 设置套接字标记",
+      "logLevel": "日志等级",
+      "logLevels": {
+        "error": "错误",
+        "warn": "警告",
+        "info": "信息",
+        "debug": "调试",
+        "trace": "追踪"
+      },
+      "disableWaitingNetwork": "禁用网络等待"
     },
     "descriptions": {
       "pleaseEnter": "请输入您的{{fieldName}}",
-      "pleaseSelect": "请选择您的{{fieldName}}"
+      "pleaseSelect": "请选择您的{{fieldName}}",
+      "tproxyPort": "要监听的透明代理端口。合法范围是 0 - 65535。它不是 HTTP/SOCKS 端口，仅由 eBPF 程序使用。在正常情况下，您不需要使用它。",
+      "tproxyPortProtect": "将其设置为 true 可保护透明代理端口免受未经请求的流量的影响。将其设置为 false 以允许用户使用自我管理的 iptables 透明代理规则。",
+      "soMarkFromDae": "如果不是 0，则从 dae 发送的流量将被设置套接字标记（SO_MARK）。这对于使用 iptables/nftables 透明代理规则避免流量循环非常有用。",
+      "disableWaitingNetwork": "禁用在拉取订阅之前等待网络。"
     }
   },
   "actions": {
@@ -31,6 +47,9 @@
     "dns": "域名解析",
     "config": "配置",
     "orchestrate": "编排",
-    "general": "常规"
+    "general": "常规",
+    "default": "默认",
+    "softwareOptions": "软件选项",
+    "interfaceAndKernelOptions": "接口及内核选项"
   }
 }
