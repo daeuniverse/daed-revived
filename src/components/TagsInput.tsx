@@ -1,14 +1,19 @@
 import { useUpdateEffect } from 'ahooks'
 import { uniq } from 'lodash'
 import { XIcon } from 'lucide-react'
-import { FC, useState } from 'react'
+import { FC, useMemo, useState } from 'react'
 import { Badge } from '~/components/ui/badge'
 
-export const TagsInput: FC<{ defaultTags?: string[]; onChange?: (tags: string[]) => unknown }> = ({
-  defaultTags = [],
-  onChange
-}) => {
+export const TagsInput: FC<{
+  defaultTags?: string[]
+  separators?: string[]
+  onChange?: (tags: string[]) => unknown
+}> = ({ defaultTags = [], separators: separatorsProp = [], onChange }) => {
   const [tags, setTags] = useState<string[]>(uniq(defaultTags))
+  const separators = useMemo(
+    () => ['enter', ...separatorsProp].map((separator) => separator.toLowerCase()),
+    [separatorsProp]
+  )
 
   useUpdateEffect(() => {
     onChange?.(tags)
@@ -34,7 +39,7 @@ export const TagsInput: FC<{ defaultTags?: string[]; onChange?: (tags: string[])
         onKeyDown={(e) => {
           const value = e.currentTarget.value
 
-          if (value && e.key.toLowerCase().includes('enter')) {
+          if (value && separators.includes(e.key.toLowerCase())) {
             e.preventDefault()
 
             if (tags.includes(value)) return
