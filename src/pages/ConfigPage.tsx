@@ -43,6 +43,7 @@ export const ConfigPage = () => {
     resolver: zodResolver(configFormSchema),
     defaultValues: configFormDefault
   })
+  const untouched = Object.values(form.formState.dirtyFields).every((dirty) => !dirty)
   const defaultConfigIdQuery = useGetJSONStorageRequest(['defaultConfigID'] as const)
   const generalQuery = useGeneralQuery()
   const configsQuery = useConfigsQuery()
@@ -96,6 +97,8 @@ export const ConfigPage = () => {
         }))
     ]
   }, [generalQuery.data?.general.interfaces, t])
+
+  console.log(form.formState.dirtyFields)
 
   return (
     <div className="space-y-6">
@@ -187,7 +190,7 @@ export const ConfigPage = () => {
                       </DialogHeader>
 
                       <div className="py-2">
-                        <Accordion type="multiple">
+                        <Accordion type="multiple" defaultValue={['software-options']}>
                           <AccordionItem value="software-options">
                             <AccordionTrigger>{t('primitives.softwareOptions')}</AccordionTrigger>
 
@@ -641,11 +644,11 @@ export const ConfigPage = () => {
                       </div>
 
                       <DialogFooter>
-                        <Button type="reset" variant="secondary" onClick={() => form.reset()}>
+                        <Button type="reset" variant="secondary" disabled={untouched} onClick={() => form.reset()}>
                           {t('actions.reset')}
                         </Button>
 
-                        <Button type="submit" loading={form.formState.isSubmitting}>
+                        <Button type="submit" disabled={untouched} loading={form.formState.isSubmitting}>
                           {t('actions.submit')}
                         </Button>
                       </DialogFooter>
