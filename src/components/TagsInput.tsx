@@ -9,13 +9,13 @@ import { Badge } from '~/components/ui/badge'
 import { Button } from '~/components/ui/button'
 import { cn } from '~/lib/ui'
 
-type TagsInputOption = {
+export type TagsInputOption = {
   value: string
   title?: string
   description?: ReactNode
 }
 
-type TagsInputProps = {
+export type TagsInputProps = {
   options?: TagsInputOption[]
   value?: TagsInputOption['value'][]
   onChange?: (value: TagsInputOption['value'][]) => void
@@ -103,7 +103,6 @@ const TagsInput = forwardRef<HTMLInputElement, TagsInputProps>(
     const portalSize = useSize(portalRef)
 
     const { refs, floatingStyles } = useFloating({
-      placement: 'bottom-start',
       whileElementsMounted: autoUpdate,
       middleware: [offset(10), flip()]
     })
@@ -181,7 +180,5 @@ const TagsInput = forwardRef<HTMLInputElement, TagsInputProps>(
   }
 )
 TagsInput.displayName = 'TagsInput'
-
-export type { TagsInputOption, TagsInputProps }
 
 export { TagsInput }

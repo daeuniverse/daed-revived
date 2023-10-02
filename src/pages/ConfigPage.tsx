@@ -15,6 +15,7 @@ import { Button } from '~/components/ui/button'
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '~/components/ui/card'
 import {
   Dialog,
+  DialogBody,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -98,8 +99,6 @@ export const ConfigPage = () => {
     ]
   }, [generalQuery.data?.general.interfaces, t])
 
-  console.log(form.formState.dirtyFields)
-
   return (
     <div className="space-y-6">
       <p>Configs</p>
@@ -166,6 +165,7 @@ export const ConfigPage = () => {
                 <DialogContent size="large">
                   <Form {...form}>
                     <form
+                      className="contents"
                       onSubmit={form.handleSubmit(async (values) => {
                         const { checkIntervalSeconds, checkToleranceMS, sniffingTimeoutMS, ...global } = values
 
@@ -189,7 +189,7 @@ export const ConfigPage = () => {
                         <DialogDescription>{config.id}</DialogDescription>
                       </DialogHeader>
 
-                      <div className="py-2">
+                      <DialogBody>
                         <Accordion type="multiple" defaultValue={['software-options']}>
                           <AccordionItem value="software-options">
                             <AccordionTrigger>{t('primitives.softwareOptions')}</AccordionTrigger>
@@ -641,7 +641,7 @@ export const ConfigPage = () => {
                             </AccordionContent>
                           </AccordionItem>
                         </Accordion>
-                      </div>
+                      </DialogBody>
 
                       <DialogFooter>
                         <Button type="reset" variant="secondary" disabled={untouched} onClick={() => form.reset()}>

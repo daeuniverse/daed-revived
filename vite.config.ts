@@ -8,6 +8,7 @@ export default defineConfig(() => {
   return {
     base: './',
     resolve: { alias: { '~': path.resolve('src') } },
+    build: { chunkSizeWarningLimit: Number.MAX_SAFE_INTEGER },
     plugins: [react(), splitVendorChunkPlugin()],
     test: { globals: true }
   }
