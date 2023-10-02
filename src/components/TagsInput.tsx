@@ -1,3 +1,4 @@
+import { autoPlacement, offset, useFloating } from '@floating-ui/react'
 import { useCombobox, useMultipleSelection } from 'downshift'
 import { differenceWith } from 'lodash'
 import { ChevronDownIcon, XIcon } from 'lucide-react'
@@ -7,31 +8,26 @@ import { Badge } from '~/components/ui/badge'
 import { Button } from '~/components/ui/button'
 import { cn } from '~/lib/ui'
 
-export type TagsInputOption = {
+type TagsInputOption = {
   value: string
   title: string
   description: string
 }
 
-export type TagsInputProps = {
-  options: TagsInputOption[]
-  value?: TagsInputOption[]
-  onChange?: (value: TagsInputOption[]) => void
+type TagsInputProps = {
+  options?: TagsInputOption[]
+  value?: TagsInputOption['value'][]
+  onChange?: (value: TagsInputOption['value'][]) => void
   placeholder?: string
 }
 
-export const TagsInput: FC<TagsInputProps> = ({
-  options,
-  value = [] as unknown as TagsInputOption[],
-  onChange,
-  placeholder
-}) => {
+const TagsInput: FC<TagsInputProps> = ({ options = [], value = [], onChange, placeholder }) => {
   const [inputValue, setInputValue] = useState('')
 
   const items = useMemo(
     () =>
       matchSorter(
-        differenceWith(options, value, (a, b) => a.value === b.value),
+        differenceWith(options, value, (a, b) => a.value === b),
         inputValue,
         {
           keys: ['title', 'description']
@@ -85,7 +81,7 @@ export const TagsInput: FC<TagsInputProps> = ({
           case useCombobox.stateChangeTypes.ItemClick:
           case useCombobox.stateChangeTypes.InputBlur:
             if (newSelectedItem) {
-              onChange?.([...value, newSelectedItem])
+              onChange?.([...value, newSelectedItem.value])
               setInputValue('')
             }
 
@@ -102,25 +98,32 @@ export const TagsInput: FC<TagsInputProps> = ({
       }
     })
 
+  const open = !!(isOpen && items.length)
+
+  const { refs, floatingStyles } = useFloating({
+    middleware: [offset(10), autoPlacement()]
+  })
+
   return (
-    <div className="relative">
+    <div ref={refs.setReference} className="relative">
       <div className="inline-flex w-full flex-wrap items-center gap-2 rounded border bg-background p-2 shadow-sm focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 focus-within:ring-offset-background">
-        {value.map((selectedItemForRender, index) => (
+        {value.map((selectedValue, index) => (
           <Badge
             key={index}
             className="gap-0.5 ring-offset-background"
             {...getSelectedItemProps({
-              selectedItem: selectedItemForRender,
+              selectedItem: selectedValue,
               index
             })}
           >
-            {selectedItemForRender.title}
+            {options.find((option) => option.value === selectedValue)?.title}
 
             <button
+              type="button"
               className="rounded-full outline-none ring-0 ring-offset-transparent transition-colors hover:bg-transparent/30 hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1"
               onClick={(e) => {
                 e.stopPropagation()
-                removeSelectedItem(selectedItemForRender)
+                removeSelectedItem(selectedValue)
               }}
             >
               <XIcon className="h-3 w-3" />
@@ -135,36 +138,42 @@ export const TagsInput: FC<TagsInputProps> = ({
             {...getInputProps(getDropdownProps({ preventKeyAction: isOpen }))}
           />
 
-          <Button variant="secondary" className="h-fit w-fit p-1" {...getToggleButtonProps()}>
+          <Button type="button" variant="secondary" className="h-fit w-fit p-1" {...getToggleButtonProps()}>
             <ChevronDownIcon className="h-4 w-4" />
           </Button>
         </div>
       </div>
 
-      <ul
-        className={cn(
-          !(isOpen && items.length) && 'hidden',
-          'absolute inset-x-0 z-10 mt-2 max-h-80 overflow-y-auto rounded bg-background'
-        )}
-        {...getMenuProps()}
-      >
-        {isOpen &&
-          items.map((item, index) => (
-            <li
-              key={index}
-              className={cn(
-                highlightedIndex === index && 'bg-accent',
-                selectedItem === item && 'font-bold',
-                'flex flex-col gap-1 p-2'
-              )}
-              {...getItemProps({ item, index })}
-            >
-              <span className="text-sm">{item.title}</span>
+      <div className={cn(!open && 'hidden')} {...getMenuProps()}>
+        {isOpen && (
+          <ul
+            ref={refs.setFloating}
+            className="max-h-64 w-full overflow-y-auto rounded bg-background"
+            style={floatingStyles}
+          >
+            {items.map((item, index) => (
+              <li
+                key={index}
+                className={cn(
+                  highlightedIndex === index && 'bg-accent',
+                  selectedItem === item && 'font-bold',
+                  'flex flex-col gap-1 p-2'
+                )}
+                {...getItemProps({ item, index })}
+              >
+                <span className="text-sm">{item.title}</span>
 
-              <span className="text-xs">{item.description}</span>
-            </li>
-          ))}
-      </ul>
+                <span className="text-xs">{item.description}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
     </div>
   )
 }
+TagsInput.displayName = 'TagsInput'
+
+export type { TagsInputOption, TagsInputProps }
+
+export { TagsInput }

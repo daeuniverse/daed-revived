@@ -16,6 +16,8 @@
         "trace": "trace"
       },
       "disableWaitingNetwork": "Disable Waiting Network",
+      "lanInterface": "LAN Interface",
+      "wanInterface": "WAN Interface",
       "autoConfigKernelParameter": "Auto Config Kernel Parameter",
       "tcpCheckUrl": "TCP Check URL",
       "tcpCheckHttpMethod": "TCP Check HTTP Method",
@@ -41,6 +43,8 @@
       "tproxyPortProtect": "Set it true to protect tproxy port from unsolicited traffic. Set it false to allow users to use self-managed iptables tproxy rules",
       "soMarkFromDae": "If not zero, traffic sent from dae will be set SO_MARK. It is useful to avoid traffic loop with iptables/nftables tproxy rules",
       "disableWaitingNetwork": "Disable waiting for network before pulling subscriptions",
+      "lanInterface": "The LAN interface to bind. Use it if you want to proxy LAN",
+      "wanInterface": "The WAN interface to bind. Use it if you want to proxy localhost",
       "autoConfigKernelParameter": "Automatically configure Linux kernel parameters like ip_forward and send_redirects",
       "tcpCheckUrl": "Host of URL should have both IPV4 and IPV6 if you have Dual Stack in local. First is URL, others are IP addresses if given. Considering traffic consumption, it is recommended to choose a site with Anycast IP and less response",
       "tcpCheckHttpMethod": "The HTTP request method to TCP Check HTTP Method. Use HEAD by default because some server implementations bypass accounting for this kind of traffic",

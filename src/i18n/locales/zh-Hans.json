@@ -16,6 +16,8 @@
         "trace": "追踪"
       },
       "disableWaitingNetwork": "禁用网络等待",
+      "lanInterface": "LAN 接口",
+      "wanInterface": "WAN 接口",
       "autoConfigKernelParameter": "自动配置内核参数",
       "tcpCheckUrl": "TCP 检测链接",
       "tcpCheckHttpMethod": "TCP 检测 HTTP 方式",
@@ -41,6 +43,8 @@
       "tproxyPortProtect": "将其设置为 true 可保护透明代理端口免受未经请求的流量的影响。将其设置为 false 以允许用户使用自我管理的 iptables 透明代理规则",
       "soMarkFromDae": "如果不是 0，则从 dae 发送的流量将被设置套接字标记（SO_MARK）。这对于使用 iptables/nftables 透明代理规则避免流量循环非常有用",
       "disableWaitingNetwork": "禁用在拉取订阅之前等待网络",
+      "lanInterface": "要绑定的 LAN 接口。如果您想代理局域网，请使用它",
+      "wanInterface": "要绑定的 WAN 接口。如果您想代理本机，请使用它",
       "autoConfigKernelParameter": "自动配置 Linux 内核参数，如 ip_forward（路由转发）和 send_redirects（发送重定向）",
       "tcpCheckUrl": "如果您在本地有 Dual Stack（双协议栈），URL 的域名解析应该同时具有 IPV4 和 IPV6。第一个是 URL，其它是 IP 地址（如果给定的话）。考虑到流量消耗，建议选择具有 Anycast IP 且响应较少的站点",
       "tcpCheckHttpMethod": "对 TCP 检测链接的 HTTP 请求方法。默认情况下使用 HEAD，因为某些服务器实现绕过了对此类流量的核算",

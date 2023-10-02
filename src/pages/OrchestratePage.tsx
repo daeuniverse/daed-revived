@@ -15,7 +15,7 @@ const books: TagsInputOption[] = [
 ]
 
 export const OrchestratePage = () => {
-  const [value, setValue] = useState<TagsInputOption[]>([])
+  const [value, setValue] = useState<string[]>([])
 
   return (
     <div className="flex flex-col gap-4">

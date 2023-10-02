@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { z } from 'zod'
 import { useRemoveConfigMutation, useSelectConfigMutation } from '~/apis/mutation'
-import { useConfigsQuery, useGetJSONStorageRequest } from '~/apis/query'
+import { useConfigsQuery, useGeneralQuery, useGetJSONStorageRequest } from '~/apis/query'
 import { CodeBlock } from '~/components/CodeBlock'
 import { TagsInput } from '~/components/TagsInput'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '~/components/ui/accordion'
@@ -43,6 +43,7 @@ export const ConfigPage = () => {
     defaultValues: configFormDefault
   })
   const defaultConfigIdQuery = useGetJSONStorageRequest(['defaultConfigID'] as const)
+  const generalQuery = useGeneralQuery()
   const configsQuery = useConfigsQuery()
   const isDefault = (id: string) => id === defaultConfigIdQuery.data?.defaultConfigID
   const [editDialogOpened, setEditDialogOpened] = useState(false)
@@ -230,6 +231,58 @@ export const ConfigPage = () => {
                             <AccordionContent>
                               <div className="space-y-4">
                                 <FormField
+                                  name="lanInterface"
+                                  control={form.control}
+                                  render={({ field }) => (
+                                    <FormItem>
+                                      <FormLabel>{t('form.fields.lanInterface')}</FormLabel>
+
+                                      <FormDescription>{t('form.descriptions.lanInterface')}</FormDescription>
+
+                                      <FormControl>
+                                        <TagsInput
+                                          options={generalQuery.data?.general.interfaces.map(({ name, ip }) => ({
+                                            value: name,
+                                            title: name,
+                                            description: ip[0]
+                                          }))}
+                                          value={field.value}
+                                          onChange={field.onChange}
+                                        />
+                                      </FormControl>
+
+                                      <FormMessage />
+                                    </FormItem>
+                                  )}
+                                />
+
+                                <FormField
+                                  name="wanInterface"
+                                  control={form.control}
+                                  render={({ field }) => (
+                                    <FormItem>
+                                      <FormLabel>{t('form.fields.wanInterface')}</FormLabel>
+
+                                      <FormDescription>{t('form.descriptions.wanInterface')}</FormDescription>
+
+                                      <FormControl>
+                                        <TagsInput
+                                          options={generalQuery.data?.general.interfaces.map(({ name, ip }) => ({
+                                            value: name,
+                                            title: name,
+                                            description: ip[0]
+                                          }))}
+                                          value={field.value}
+                                          onChange={field.onChange}
+                                        />
+                                      </FormControl>
+
+                                      <FormMessage />
+                                    </FormItem>
+                                  )}
+                                />
+
+                                <FormField
                                   name="autoConfigKernelParameter"
                                   control={form.control}
                                   render={({ field }) => (
@@ -315,7 +368,7 @@ export const ConfigPage = () => {
                                       <FormDescription>{t('form.descriptions.udpCheckDns')}</FormDescription>
 
                                       <FormControl>
-                                        <TagsInput tags={field.value} onChange={field.onChange} />
+                                        <TagsInput value={field.value} onChange={field.onChange} />
                                       </FormControl>
 
                                       <FormMessage />
