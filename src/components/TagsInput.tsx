@@ -1,8 +1,8 @@
-import { flip, FloatingPortal, offset, useFloating } from '@floating-ui/react'
+import { autoUpdate, flip, FloatingPortal, offset, useFloating } from '@floating-ui/react'
 import { useSize } from 'ahooks'
 import { useCombobox, useMultipleSelection } from 'downshift'
 import { differenceWith } from 'lodash'
-import { ChevronDownIcon, XIcon } from 'lucide-react'
+import { ChevronDownIcon, ChevronUpIcon, XIcon } from 'lucide-react'
 import { matchSorter } from 'match-sorter'
 import { forwardRef, HTMLAttributes, useMemo, useRef, useState } from 'react'
 import { Badge } from '~/components/ui/badge'
@@ -11,15 +11,14 @@ import { cn } from '~/lib/ui'
 
 type TagsInputOption = {
   value: string
-  title: string
-  description: string
+  title?: string
+  description?: string
 }
 
 type TagsInputProps = {
   options?: TagsInputOption[]
   value?: TagsInputOption['value'][]
   onChange?: (value: TagsInputOption['value'][]) => void
-  placeholder?: string
 } & HTMLAttributes<HTMLInputElement>
 
 const TagsInput = forwardRef<HTMLInputElement, TagsInputProps>(
@@ -29,11 +28,9 @@ const TagsInput = forwardRef<HTMLInputElement, TagsInputProps>(
     const items = useMemo(
       () =>
         matchSorter(
-          differenceWith(options, value, (a, b) => a.value === b),
+          differenceWith(options, value, (option, b) => option.value === b),
           inputValue,
-          {
-            keys: ['title', 'description']
-          }
+          { keys: ['title', 'description'] }
         ),
       [inputValue, value, options]
     )
@@ -50,6 +47,7 @@ const TagsInput = forwardRef<HTMLInputElement, TagsInputProps>(
             newSelectedItems && onChange?.(newSelectedItems)
 
             break
+
           default:
             break
         }
@@ -59,7 +57,7 @@ const TagsInput = forwardRef<HTMLInputElement, TagsInputProps>(
     const { isOpen, getToggleButtonProps, getMenuProps, getInputProps, highlightedIndex, getItemProps, selectedItem } =
       useCombobox({
         items,
-        itemToString: (item) => (item ? item.title : ''),
+        itemToString: (item) => (item?.title ? item.title : ''),
         defaultHighlightedIndex: 0, // after selection, highlight the first item.
         selectedItem: null,
         inputValue,
@@ -107,6 +105,7 @@ const TagsInput = forwardRef<HTMLInputElement, TagsInputProps>(
 
     const { refs, floatingStyles } = useFloating({
       placement: 'bottom-start',
+      whileElementsMounted: autoUpdate,
       middleware: [offset(10), flip()]
     })
 
@@ -120,18 +119,16 @@ const TagsInput = forwardRef<HTMLInputElement, TagsInputProps>(
             <Badge
               key={index}
               className="gap-0.5 ring-offset-background"
-              {...getSelectedItemProps({
-                selectedItem: selectedValue,
-                index
-              })}
+              {...getSelectedItemProps({ selectedItem: selectedValue, index })}
             >
-              {options.find((option) => option.value === selectedValue)?.title}
+              {options.find((option) => option.value === selectedValue)?.title || selectedValue}
 
               <button
                 type="button"
                 className="rounded-full outline-none ring-0 ring-offset-transparent transition-colors hover:bg-transparent/30 hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1"
                 onClick={(e) => {
                   e.stopPropagation()
+
                   removeSelectedItem(selectedValue)
                 }}
               >
@@ -150,7 +147,7 @@ const TagsInput = forwardRef<HTMLInputElement, TagsInputProps>(
             />
 
             <Button type="button" variant="secondary" className="h-fit w-fit p-1" {...getToggleButtonProps()}>
-              <ChevronDownIcon className="h-4 w-4" />
+              {open ? <ChevronUpIcon className="h-4 w-4" /> : <ChevronDownIcon className="h-4 w-4" />}
             </Button>
           </div>
         </div>
@@ -173,9 +170,9 @@ const TagsInput = forwardRef<HTMLInputElement, TagsInputProps>(
                     )}
                     {...getItemProps({ item, index })}
                   >
-                    <span className="text-sm">{item.title}</span>
+                    <span className="text-sm">{item.title || item.value}</span>
 
-                    <span className="text-xs">{item.description}</span>
+                    {item.description && <span className="text-xs">{item.description}</span>}
                   </li>
                 ))}
               </ul>
