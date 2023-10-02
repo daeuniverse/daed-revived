@@ -1,4 +1,6 @@
 import { useAsyncEffect } from 'ahooks'
+import dayjs from 'dayjs'
+import duration from 'dayjs/plugin/duration'
 import { FC, ReactNode, useState } from 'react'
 import { LoadingSpinner } from '~/components/LoadingSpinner'
 import { initializeEditor } from '~/editor'
@@ -10,6 +12,7 @@ export const Bootstrap: FC<{ children: ReactNode }> = ({ children }) => {
   useAsyncEffect(async () => {
     setLoading(true)
 
+    dayjs.extend(duration)
     await initializeI18n()
     await initializeEditor()
 

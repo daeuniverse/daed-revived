@@ -1,14 +1,14 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SelectIcon } from '@radix-ui/react-select'
 import { CodeIcon, EditIcon, Trash2Icon } from 'lucide-react'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { z } from 'zod'
-import { useRemoveConfigMutation, useSelectConfigMutation } from '~/apis/mutation'
+import { useRemoveConfigMutation, useSelectConfigMutation, useUpdateConfigMutation } from '~/apis/mutation'
 import { useConfigsQuery, useGeneralQuery, useGetJSONStorageRequest } from '~/apis/query'
 import { CodeBlock } from '~/components/CodeBlock'
-import { TagsInput } from '~/components/TagsInput'
+import { TagsInput, TagsInputOption } from '~/components/TagsInput'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '~/components/ui/accordion'
 import { Badge } from '~/components/ui/badge'
 import { Button } from '~/components/ui/button'
@@ -27,6 +27,7 @@ import { Input } from '~/components/ui/input'
 import { ScrollArea } from '~/components/ui/scroll-area'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select'
 import { Switch } from '~/components/ui/switch'
+import { deriveTime } from '~/helper/time'
 import { cn } from '~/lib/ui'
 import {
   TLSImplementation,
@@ -48,7 +49,53 @@ export const ConfigPage = () => {
   const isDefault = (id: string) => id === defaultConfigIdQuery.data?.defaultConfigID
   const [editDialogOpened, setEditDialogOpened] = useState(false)
   const selectConfigMutation = useSelectConfigMutation()
+  const updateConfigMutation = useUpdateConfigMutation()
   const removeConfigMutation = useRemoveConfigMutation()
+
+  const lanInterfaces: TagsInputOption[] = useMemo(() => {
+    const interfaces = generalQuery.data?.general.interfaces
+
+    if (!interfaces) {
+      return []
+    }
+
+    return interfaces.map(({ name, ip }) => ({
+      label: name,
+      value: name,
+      description: (
+        <div className="flex flex-col gap-1">
+          {ip.map((addr, i) => (
+            <span key={i}>{addr}</span>
+          ))}
+        </div>
+      )
+    }))
+  }, [generalQuery.data?.general.interfaces])
+
+  const wanInterfaces: TagsInputOption[] = useMemo(() => {
+    const interfaces = generalQuery.data?.general.interfaces
+
+    if (!interfaces) {
+      return []
+    }
+
+    return [
+      { title: t('primitives.autoDetect'), value: 'auto' },
+      ...interfaces
+        .filter(({ flag }) => !!flag.default)
+        .map(({ name, ip }) => ({
+          title: name,
+          value: name,
+          description: (
+            <div className="flex flex-col gap-1">
+              {ip.map((addr, i) => (
+                <span key={i}>{addr}</span>
+              ))}
+            </div>
+          )
+        }))
+    ]
+  }, [generalQuery.data?.general.interfaces, t])
 
   return (
     <div className="space-y-6">
@@ -91,7 +138,21 @@ export const ConfigPage = () => {
                 </DialogContent>
               </Dialog>
 
-              <Dialog open={editDialogOpened} onOpenChange={setEditDialogOpened}>
+              <Dialog
+                open={editDialogOpened}
+                onOpenChange={(opened) => {
+                  if (opened) {
+                    form.reset({
+                      ...config.global,
+                      checkIntervalSeconds: deriveTime(config.global.checkInterval, 's'),
+                      sniffingTimeoutMS: deriveTime(config.global.sniffingTimeout, 'ms'),
+                      checkToleranceMS: deriveTime(config.global.checkTolerance, 'ms')
+                    })
+                  }
+
+                  setEditDialogOpened(opened)
+                }}
+              >
                 <DialogTrigger asChild>
                   <Button variant="secondary" className="gap-2">
                     <EditIcon className="w-4" />
@@ -103,7 +164,17 @@ export const ConfigPage = () => {
                   <Form {...form}>
                     <form
                       onSubmit={form.handleSubmit(async (values) => {
-                        console.log(values)
+                        const { checkIntervalSeconds, checkToleranceMS, sniffingTimeoutMS, ...global } = values
+
+                        await updateConfigMutation.mutateAsync({
+                          id: config.id,
+                          global: {
+                            ...global,
+                            checkInterval: `${checkIntervalSeconds}s`,
+                            checkTolerance: `${checkToleranceMS}ms`,
+                            sniffingTimeout: `${sniffingTimeoutMS}ms`
+                          }
+                        })
 
                         await configsQuery.refetch()
 
@@ -132,7 +203,12 @@ export const ConfigPage = () => {
                                       <FormDescription>{t('form.descriptions.tproxyPort')}</FormDescription>
 
                                       <FormControl>
-                                        <Input type="number" placeholder="12345" {...field} />
+                                        <Input
+                                          type="number"
+                                          placeholder="12345"
+                                          value={field.value}
+                                          onChange={(e) => field.onChange(Number.parseInt(e.target.value))}
+                                        />
                                       </FormControl>
 
                                       <FormMessage />
@@ -168,7 +244,11 @@ export const ConfigPage = () => {
                                       <FormDescription>{t('form.descriptions.soMarkFromDae')}</FormDescription>
 
                                       <FormControl>
-                                        <Input type="number" {...field} />
+                                        <Input
+                                          type="number"
+                                          value={field.value}
+                                          onChange={(e) => field.onChange(Number.parseInt(e.target.value))}
+                                        />
                                       </FormControl>
 
                                       <FormMessage />
@@ -241,11 +321,7 @@ export const ConfigPage = () => {
 
                                       <FormControl>
                                         <TagsInput
-                                          options={generalQuery.data?.general.interfaces.map(({ name, ip }) => ({
-                                            value: name,
-                                            title: name,
-                                            description: ip[0]
-                                          }))}
+                                          options={lanInterfaces}
                                           value={field.value}
                                           onChange={field.onChange}
                                         />
@@ -267,11 +343,7 @@ export const ConfigPage = () => {
 
                                       <FormControl>
                                         <TagsInput
-                                          options={generalQuery.data?.general.interfaces.map(({ name, ip }) => ({
-                                            value: name,
-                                            title: name,
-                                            description: ip[0]
-                                          }))}
+                                          options={wanInterfaces}
                                           value={field.value}
                                           onChange={field.onChange}
                                         />
@@ -386,7 +458,11 @@ export const ConfigPage = () => {
                                       </FormLabel>
 
                                       <FormControl>
-                                        <Input type="number" {...field} />
+                                        <Input
+                                          type="number"
+                                          value={field.value}
+                                          onChange={(e) => field.onChange(Number.parseInt(e.target.value))}
+                                        />
                                       </FormControl>
 
                                       <FormMessage />
@@ -406,7 +482,11 @@ export const ConfigPage = () => {
                                       <FormDescription>{t('form.descriptions.checkTolerance')}</FormDescription>
 
                                       <FormControl>
-                                        <Input type="number" {...field} />
+                                        <Input
+                                          type="number"
+                                          value={field.value}
+                                          onChange={(e) => field.onChange(Number.parseInt(e.target.value))}
+                                        />
                                       </FormControl>
 
                                       <FormMessage />
@@ -476,7 +556,11 @@ export const ConfigPage = () => {
 
                                       <FormDescription>{t('form.descriptions.sniffingTimeout')}</FormDescription>
 
-                                      <Input type="number" {...field} />
+                                      <Input
+                                        type="number"
+                                        value={field.value}
+                                        onChange={(e) => field.onChange(Number.parseInt(e.target.value))}
+                                      />
 
                                       <FormMessage />
                                     </FormItem>

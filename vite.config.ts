@@ -8,6 +8,7 @@ export default defineConfig(() => {
   return {
     base: './',
     resolve: { alias: { '~': path.resolve('src') } },
-    plugins: [react(), splitVendorChunkPlugin()]
+    plugins: [react(), splitVendorChunkPlugin()],
+    test: { globals: true }
   }
 })

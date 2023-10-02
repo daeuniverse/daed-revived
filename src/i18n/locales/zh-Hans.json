@@ -84,6 +84,7 @@
     "nodeConnectivityCheck": "节点连通性检测",
     "connectingOptions": "连接选项",
     "millisecond": "毫秒",
-    "second": "秒"
+    "second": "秒",
+    "autoDetect": "自动检测"
   }
 }

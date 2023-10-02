@@ -4,7 +4,7 @@ import { useCombobox, useMultipleSelection } from 'downshift'
 import { differenceWith } from 'lodash'
 import { ChevronDownIcon, ChevronUpIcon, XIcon } from 'lucide-react'
 import { matchSorter } from 'match-sorter'
-import { forwardRef, HTMLAttributes, useMemo, useRef, useState } from 'react'
+import { forwardRef, HTMLAttributes, ReactNode, useMemo, useRef, useState } from 'react'
 import { Badge } from '~/components/ui/badge'
 import { Button } from '~/components/ui/button'
 import { cn } from '~/lib/ui'
@@ -12,7 +12,7 @@ import { cn } from '~/lib/ui'
 type TagsInputOption = {
   value: string
   title?: string
-  description?: string
+  description?: ReactNode
 }
 
 type TagsInputProps = {
@@ -30,7 +30,7 @@ const TagsInput = forwardRef<HTMLInputElement, TagsInputProps>(
         matchSorter(
           differenceWith(options, value, (option, b) => option.value === b),
           inputValue,
-          { keys: ['title', 'description'] }
+          { sorter: (rankedItems) => rankedItems, keys: ['title', 'description'] }
         ),
       [inputValue, value, options]
     )
@@ -54,49 +54,48 @@ const TagsInput = forwardRef<HTMLInputElement, TagsInputProps>(
       }
     })
 
-    const { isOpen, getToggleButtonProps, getMenuProps, getInputProps, highlightedIndex, getItemProps, selectedItem } =
-      useCombobox({
-        items,
-        itemToString: (item) => (item?.title ? item.title : ''),
-        defaultHighlightedIndex: 0, // after selection, highlight the first item.
-        selectedItem: null,
-        inputValue,
+    const { isOpen, getToggleButtonProps, getMenuProps, getInputProps, highlightedIndex, getItemProps } = useCombobox({
+      items,
+      itemToString: (item) => (item?.title ? item.title : ''),
+      defaultHighlightedIndex: 0, // after selection, highlight the first item.
+      selectedItem: null,
+      inputValue,
 
-        stateReducer(_state, actionAndChanges) {
-          const { changes, type } = actionAndChanges
+      stateReducer(_state, actionAndChanges) {
+        const { changes, type } = actionAndChanges
 
-          switch (type) {
-            case useCombobox.stateChangeTypes.InputKeyDownEnter:
-            case useCombobox.stateChangeTypes.ItemClick:
-              return { ...changes, isOpen: true, highlightedIndex: 0 }
+        switch (type) {
+          case useCombobox.stateChangeTypes.InputKeyDownEnter:
+          case useCombobox.stateChangeTypes.ItemClick:
+            return { ...changes, isOpen: true, highlightedIndex: 0 }
 
-            default:
-              return changes
-          }
-        },
-
-        onStateChange({ inputValue: newInputValue, type, selectedItem: newSelectedItem }) {
-          switch (type) {
-            case useCombobox.stateChangeTypes.InputKeyDownEnter:
-            case useCombobox.stateChangeTypes.ItemClick:
-            case useCombobox.stateChangeTypes.InputBlur:
-              if (newSelectedItem) {
-                onChange?.([...value, newSelectedItem.value])
-                setInputValue('')
-              }
-
-              break
-
-            case useCombobox.stateChangeTypes.InputChange:
-              setInputValue(newInputValue || '')
-
-              break
-
-            default:
-              break
-          }
+          default:
+            return changes
         }
-      })
+      },
+
+      onStateChange({ inputValue: newInputValue, type, selectedItem: newSelectedItem }) {
+        switch (type) {
+          case useCombobox.stateChangeTypes.InputKeyDownEnter:
+          case useCombobox.stateChangeTypes.ItemClick:
+          case useCombobox.stateChangeTypes.InputBlur:
+            if (newSelectedItem) {
+              onChange?.([...value, newSelectedItem.value])
+              setInputValue('')
+            }
+
+            break
+
+          case useCombobox.stateChangeTypes.InputChange:
+            setInputValue(newInputValue || '')
+
+            break
+
+          default:
+            break
+        }
+      }
+    })
 
     const open = !!(isOpen && items.length)
 
@@ -163,14 +162,12 @@ const TagsInput = forwardRef<HTMLInputElement, TagsInputProps>(
                 {items.map((item, index) => (
                   <li
                     key={index}
-                    className={cn(
-                      highlightedIndex === index && 'bg-accent',
-                      selectedItem === item && 'font-bold',
-                      'flex flex-col gap-1 p-2'
-                    )}
+                    className={cn(highlightedIndex === index && 'bg-accent ', 'flex flex-col gap-1 p-2')}
                     {...getItemProps({ item, index })}
                   >
-                    <span className="text-sm">{item.title || item.value}</span>
+                    <span className={cn(highlightedIndex === index && 'font-bold', 'text-sm')}>
+                      {item.title || item.value}
+                    </span>
 
                     {item.description && <span className="text-xs">{item.description}</span>}
                   </li>
