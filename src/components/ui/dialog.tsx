@@ -28,7 +28,7 @@ const DialogOverlay = React.forwardRef<
 DialogOverlay.displayName = DialogPrimitive.Overlay.displayName
 
 const dialogVariants = cva(
-  'fixed z-50 flex flex-col w-full max-h-screen sm:max-h-[95vh] gap-4 border bg-background shadow-lg duration-200 overflow-auto data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 sm:rounded-lg',
+  'fixed z-50 flex flex-col w-full max-h-screen sm:max-h-[90vh] border bg-background shadow-lg duration-200 overflow-hidden data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 sm:rounded-lg',
   {
     variants: {
       position: {
@@ -92,7 +92,7 @@ const DialogBody = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDiv
   ({ className, asChild, ...props }, ref) => {
     const Comp = asChild ? Slot : 'div'
 
-    return <Comp ref={ref} className={cn('flex-1 overflow-y-auto px-4 py-2 sm:px-6', className)} {...props} />
+    return <Comp ref={ref} className={cn('flex-1 overflow-y-auto p-4 sm:p-6', className)} {...props} />
   }
 )
 DialogBody.displayName = 'DialogBody'

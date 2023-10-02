@@ -136,7 +136,9 @@ export const ConfigPage = () => {
                     <DialogTitle className="uppercase">{config.name}</DialogTitle>
                   </DialogHeader>
 
-                  <CodeBlock language="json">{JSON.stringify(config, null, 2)}</CodeBlock>
+                  <DialogBody>
+                    <CodeBlock language="json">{JSON.stringify(config, null, 2)}</CodeBlock>
+                  </DialogBody>
                 </DialogContent>
               </Dialog>
 
