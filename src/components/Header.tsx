@@ -1,7 +1,7 @@
 import i18n from 'i18next'
 import { ActivityIcon, CogIcon, GlobeIcon, LanguagesIcon, NetworkIcon } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { useUserQuery } from '~/apis/query'
 import { LogoText } from '~/components/LogoText'
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar'
@@ -18,6 +18,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '~/components/ui/tooltip
 
 export const Header = () => {
   const { t } = useTranslation()
+  const location = useLocation()
   const userQuery = useUserQuery()
 
   const navigationMenus = [
@@ -40,11 +41,11 @@ export const Header = () => {
               <NavigationMenuItem key={index}>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Link className={navigationMenuTriggerStyle()} to={menu.route}>
-                      <NavigationMenuLink asChild>
+                    <NavigationMenuLink asChild active={menu.route === location.pathname}>
+                      <Link className={navigationMenuTriggerStyle()} to={menu.route}>
                         <menu.Icon className="w-4 flex-shrink-0 sm:w-6" />
-                      </NavigationMenuLink>
-                    </Link>
+                      </Link>
+                    </NavigationMenuLink>
                   </TooltipTrigger>
 
                   <TooltipContent>{menu.name}</TooltipContent>
