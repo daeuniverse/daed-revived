@@ -19,7 +19,7 @@ export type TagsInputProps = {
   options?: TagsInputOption[]
   value?: TagsInputOption['value'][]
   onChange?: (value: TagsInputOption['value'][]) => void
-} & HTMLAttributes<HTMLInputElement>
+} & Omit<HTMLAttributes<HTMLInputElement>, 'value' | 'onChange'>
 
 const TagsInput = forwardRef<HTMLInputElement, TagsInputProps>(
   ({ options = [], value = [], onChange, placeholder, ...props }, ref) => {
