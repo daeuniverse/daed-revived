@@ -538,7 +538,9 @@ export const ConfigPage = () => {
 
                                       <FormDescription>{t('form.descriptions.allowInsecure')}</FormDescription>
 
-                                      <Switch checked={field.value} onCheckedChange={field.onChange} />
+                                      <FormControl>
+                                        <Switch checked={field.value} onCheckedChange={field.onChange} />
+                                      </FormControl>
 
                                       <FormMessage />
                                     </FormItem>
@@ -556,11 +558,13 @@ export const ConfigPage = () => {
 
                                       <FormDescription>{t('form.descriptions.sniffingTimeout')}</FormDescription>
 
-                                      <Input
-                                        type="number"
-                                        value={field.value}
-                                        onChange={(e) => field.onChange(Number.parseInt(e.target.value))}
-                                      />
+                                      <FormControl>
+                                        <Input
+                                          type="number"
+                                          value={field.value}
+                                          onChange={(e) => field.onChange(Number.parseInt(e.target.value))}
+                                        />
+                                      </FormControl>
 
                                       <FormMessage />
                                     </FormItem>
