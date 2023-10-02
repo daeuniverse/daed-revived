@@ -1,4 +1,4 @@
-import { useUpdateEffect } from 'ahooks'
+import { uniq } from 'lodash'
 import { XIcon } from 'lucide-react'
 import { FC, useMemo } from 'react'
 import { Badge } from '~/components/ui/badge'
@@ -9,17 +9,13 @@ export const TagsInput: FC<{
   onChange?: (tags: string[]) => unknown
 }> = ({ tags = [], separators: separatorsProp = [], onChange }) => {
   const separators = useMemo(
-    () => ['enter', ...separatorsProp].map((separator) => separator.toLowerCase()),
+    () => uniq(['enter', ' ', ...separatorsProp]).map((separator) => separator.toLowerCase()),
     [separatorsProp]
   )
 
-  useUpdateEffect(() => {
-    onChange?.(tags)
-  }, [onChange, tags])
-
   return (
     <div className="flex flex-wrap items-center gap-2 rounded border p-2 focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 focus-within:ring-offset-background">
-      {tags.map((value, index) => (
+      {uniq(tags).map((value, index) => (
         <Badge key={index} className="gap-0.5 ring-offset-background">
           {value}
 
