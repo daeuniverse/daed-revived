@@ -34,6 +34,12 @@ rules:
       next: return
     - blankLine: always
       prev: '*'
+      next: break
+    - blankLine: always
+      prev: '*'
+      next: continue
+    - blankLine: always
+      prev: '*'
       next: if
     - blankLine: always
       prev: if

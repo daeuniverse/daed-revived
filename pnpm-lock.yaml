@@ -137,6 +137,9 @@ dependencies:
   commitlint:
     specifier: ^17.7.2
     version: 17.7.2
+  downshift:
+    specifier: ^8.2.2
+    version: 8.2.2(react@18.2.0)
   eslint:
     specifier: ^8.50.0
     version: 8.50.0
@@ -182,6 +185,9 @@ dependencies:
   lucide-react:
     specifier: ^0.279.0
     version: 0.279.0(react@18.2.0)
+  match-sorter:
+    specifier: ^6.3.1
+    version: 6.3.1
   monaco-editor:
     specifier: ^0.43.0
     version: 0.43.0
@@ -4586,6 +4592,10 @@ packages:
       dot-prop: 5.3.0
     dev: false
 
+  /compute-scroll-into-view@3.1.0:
+    resolution: {integrity: sha512-rj8l8pD4bJ1nx+dAkMhV1xB5RuZEyVysfxJqB1pRchh1KVvwOv9b7CGB8ZfjTImVv2oF+sYMUkMZq6Na5Ftmbg==}
+    dev: false
+
   /concat-map@0.0.1:
     resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
     dev: false
@@ -4870,6 +4880,19 @@ packages:
   /dotenv@16.3.1:
     resolution: {integrity: sha512-IPzF4w4/Rd94bA9imS68tZBaYyBWSCE47V1RGuMrB94iyTOIEwRmVL2x/4An+6mETpLrKJ5hQkB8W4kFAadeIQ==}
     engines: {node: '>=12'}
+    dev: false
+
+  /downshift@8.2.2(react@18.2.0):
+    resolution: {integrity: sha512-UmJHlNTzmFN3i427Hh9f1OXMnkhgSB/J+urC9ywabvwuftm0nB0/Utsb89OtDq+2UqyScQV4Ro7EM2PEV80N5w==}
+    peerDependencies:
+      react: '>=16.12.0'
+    dependencies:
+      '@babel/runtime': 7.23.1
+      compute-scroll-into-view: 3.1.0
+      prop-types: 15.8.1
+      react: 18.2.0
+      react-is: 18.2.0
+      tslib: 2.6.2
     dev: false
 
   /dset@3.1.2:
@@ -6597,6 +6620,13 @@ packages:
     engines: {node: '>=8'}
     dev: false
 
+  /match-sorter@6.3.1:
+    resolution: {integrity: sha512-mxybbo3pPNuA+ZuCUhm5bwNkXrJTbsk5VWbR5wiwz/GC6LIiegBGn2w3O08UG/jdbYLinw51fSQ5xNU1U3MgBw==}
+    dependencies:
+      '@babel/runtime': 7.23.1
+      remove-accents: 0.4.2
+    dev: false
+
   /meow@8.1.2:
     resolution: {integrity: sha512-r85E3NdZ+mpYk1C6RjPFEMSE+s1iZMuHtsHAqY0DT3jZczl0diWUZ8g6oU7h0M9cD2EL+PzaYghhCLzR0ZNn5Q==}
     engines: {node: '>=10'}
@@ -7365,6 +7395,10 @@ packages:
 
   /react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
+    dev: false
+
+  /react-is@18.2.0:
+    resolution: {integrity: sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==}
     dev: false
 
   /react-remove-scroll-bar@2.3.4(@types/react@18.2.24)(react@18.2.0):

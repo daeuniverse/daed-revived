@@ -267,7 +267,7 @@ export const ConfigPage = () => {
                                       <FormDescription>{t('form.descriptions.tcpCheckUrl')}</FormDescription>
 
                                       <FormControl>
-                                        <TagsInput tags={field.value} onChange={field.onChange} />
+                                        <TagsInput value={field.value} onChange={field.onChange} />
                                       </FormControl>
 
                                       <FormMessage />
