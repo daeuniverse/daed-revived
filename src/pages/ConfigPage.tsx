@@ -42,9 +42,10 @@ export const ConfigPage = () => {
   const { t } = useTranslation()
   const form = useForm<z.infer<typeof configFormSchema>>({
     resolver: zodResolver(configFormSchema),
-    defaultValues: configFormDefault
+    defaultValues: configFormDefault,
+    shouldFocusError: true
   })
-  const untouched = Object.values(form.formState.dirtyFields).every((dirty) => !dirty)
+  const touched = Object.values(form.formState.dirtyFields).some((dirty) => dirty)
   const defaultConfigIdQuery = useGetJSONStorageRequest(['defaultConfigID'] as const)
   const generalQuery = useGeneralQuery()
   const configsQuery = useConfigsQuery()
@@ -131,7 +132,7 @@ export const ConfigPage = () => {
                   </Button>
                 </DialogTrigger>
 
-                <DialogContent size="large">
+                <DialogContent>
                   <DialogHeader>
                     <DialogTitle className="uppercase">{config.name}</DialogTitle>
                   </DialogHeader>
@@ -164,7 +165,7 @@ export const ConfigPage = () => {
                   </Button>
                 </DialogTrigger>
 
-                <DialogContent size="large">
+                <DialogContent size="medium">
                   <Form {...form}>
                     <form
                       className="contents"
@@ -211,8 +212,8 @@ export const ConfigPage = () => {
                                         <Input
                                           type="number"
                                           placeholder="12345"
-                                          value={field.value}
-                                          onChange={(e) => field.onChange(Number.parseInt(e.target.value))}
+                                          {...field}
+                                          onChange={(e) => field.onChange(Number.parseInt(e.target.value || '0'))}
                                         />
                                       </FormControl>
 
@@ -251,8 +252,8 @@ export const ConfigPage = () => {
                                       <FormControl>
                                         <Input
                                           type="number"
-                                          value={field.value}
-                                          onChange={(e) => field.onChange(Number.parseInt(e.target.value))}
+                                          {...field}
+                                          onChange={(e) => field.onChange(Number.parseInt(e.target.value || '0'))}
                                         />
                                       </FormControl>
 
@@ -325,11 +326,7 @@ export const ConfigPage = () => {
                                       <FormDescription>{t('form.descriptions.lanInterface')}</FormDescription>
 
                                       <FormControl>
-                                        <TagsInput
-                                          options={lanInterfaces}
-                                          value={field.value}
-                                          onChange={field.onChange}
-                                        />
+                                        <TagsInput options={lanInterfaces} {...field} />
                                       </FormControl>
 
                                       <FormMessage />
@@ -347,11 +344,7 @@ export const ConfigPage = () => {
                                       <FormDescription>{t('form.descriptions.wanInterface')}</FormDescription>
 
                                       <FormControl>
-                                        <TagsInput
-                                          options={wanInterfaces}
-                                          value={field.value}
-                                          onChange={field.onChange}
-                                        />
+                                        <TagsInput options={wanInterfaces} {...field} />
                                       </FormControl>
 
                                       <FormMessage />
@@ -397,7 +390,7 @@ export const ConfigPage = () => {
                                       <FormDescription>{t('form.descriptions.tcpCheckUrl')}</FormDescription>
 
                                       <FormControl>
-                                        <TagsInput value={field.value} onChange={field.onChange} />
+                                        <TagsInput {...field} />
                                       </FormControl>
 
                                       <FormMessage />
@@ -445,7 +438,7 @@ export const ConfigPage = () => {
                                       <FormDescription>{t('form.descriptions.udpCheckDns')}</FormDescription>
 
                                       <FormControl>
-                                        <TagsInput value={field.value} onChange={field.onChange} />
+                                        <TagsInput {...field} />
                                       </FormControl>
 
                                       <FormMessage />
@@ -465,8 +458,8 @@ export const ConfigPage = () => {
                                       <FormControl>
                                         <Input
                                           type="number"
-                                          value={field.value}
-                                          onChange={(e) => field.onChange(Number.parseInt(e.target.value))}
+                                          {...field}
+                                          onChange={(e) => field.onChange(Number.parseInt(e.target.value || '0'))}
                                         />
                                       </FormControl>
 
@@ -489,8 +482,8 @@ export const ConfigPage = () => {
                                       <FormControl>
                                         <Input
                                           type="number"
-                                          value={field.value}
-                                          onChange={(e) => field.onChange(Number.parseInt(e.target.value))}
+                                          {...field}
+                                          onChange={(e) => field.onChange(Number.parseInt(e.target.value || '0'))}
                                         />
                                       </FormControl>
 
@@ -566,8 +559,8 @@ export const ConfigPage = () => {
                                       <FormControl>
                                         <Input
                                           type="number"
-                                          value={field.value}
-                                          onChange={(e) => field.onChange(Number.parseInt(e.target.value))}
+                                          {...field}
+                                          onChange={(e) => field.onChange(Number.parseInt(e.target.value || '0'))}
                                         />
                                       </FormControl>
 
@@ -646,11 +639,11 @@ export const ConfigPage = () => {
                       </DialogBody>
 
                       <DialogFooter>
-                        <Button type="reset" variant="secondary" disabled={untouched} onClick={() => form.reset()}>
+                        <Button type="reset" variant="secondary" disabled={!touched} onClick={() => form.reset()}>
                           {t('actions.reset')}
                         </Button>
 
-                        <Button type="submit" disabled={untouched} loading={form.formState.isSubmitting}>
+                        <Button type="submit" disabled={!touched} loading={form.formState.isSubmitting}>
                           {t('actions.submit')}
                         </Button>
                       </DialogFooter>

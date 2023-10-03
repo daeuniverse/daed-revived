@@ -116,14 +116,15 @@ const TagsInput = forwardRef<HTMLInputElement, TagsInputProps>(
           {value.map((selectedValue, index) => (
             <Badge
               key={index}
-              className="gap-0.5 ring-offset-background"
+              className="gap-1 ring-offset-background"
               {...getSelectedItemProps({ selectedItem: selectedValue, index })}
             >
               {options.find((option) => option.value === selectedValue)?.title || selectedValue}
 
-              <button
-                type="button"
-                className="rounded-full outline-none ring-0 ring-offset-transparent transition-colors hover:bg-transparent/30 hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1"
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-auto w-auto"
                 onClick={(e) => {
                   e.stopPropagation()
 
@@ -131,7 +132,7 @@ const TagsInput = forwardRef<HTMLInputElement, TagsInputProps>(
                 }}
               >
                 <XIcon className="h-3 w-3" />
-              </button>
+              </Button>
             </Badge>
           ))}
 
@@ -144,7 +145,7 @@ const TagsInput = forwardRef<HTMLInputElement, TagsInputProps>(
               {...props}
             />
 
-            <Button type="button" variant="secondary" className="h-fit w-fit p-1" {...getToggleButtonProps()}>
+            <Button variant="secondary" className="h-fit w-fit p-1" {...getToggleButtonProps()}>
               {open ? <ChevronUpIcon className="h-4 w-4" /> : <ChevronDownIcon className="h-4 w-4" />}
             </Button>
           </div>

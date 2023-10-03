@@ -46,6 +46,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     return (
       <Comp
+        type="button"
         className={cn(buttonVariants({ variant, size, className }), loading && 'gap-2')}
         ref={ref}
         disabled={disabled || loading}

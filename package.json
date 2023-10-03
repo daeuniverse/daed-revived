@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@commitlint/config-conventional": "^17.7.0",
-    "@floating-ui/react": "^0.25.4",
+    "@floating-ui/react": "^0.26.0",
     "@graphql-codegen/cli": "5.0.0",
     "@graphql-codegen/client-preset": "4.1.0",
     "@graphql-codegen/introspection": "4.0.0",
@@ -43,14 +43,14 @@
     "@radix-ui/react-tooltip": "^1.0.7",
     "@tanstack/eslint-plugin-query": "^4.36.0",
     "@tanstack/react-query": "^4.35.7",
-    "@tanstack/react-query-devtools": "^4.35.3",
+    "@tanstack/react-query-devtools": "^4.35.7",
     "@types/lodash": "^4.14.199",
-    "@types/node": "^20.8.0",
+    "@types/node": "^20.8.2",
     "@types/react": "^18.2.24",
     "@types/react-dom": "^18.2.8",
     "@types/react-syntax-highlighter": "^15.5.7",
-    "@typescript-eslint/eslint-plugin": "^6.7.3",
-    "@typescript-eslint/parser": "^6.7.3",
+    "@typescript-eslint/eslint-plugin": "^6.7.4",
+    "@typescript-eslint/parser": "^6.7.4",
     "@vitejs/plugin-react-swc": "^3.4.0",
     "@vitest/ui": "^0.34.6",
     "ahooks": "^3.7.8",
@@ -75,7 +75,7 @@
     "jotai": "^2.4.3",
     "lint-staged": "^14.0.1",
     "lodash": "^4.17.21",
-    "lucide-react": "^0.279.0",
+    "lucide-react": "^0.282.0",
     "match-sorter": "^6.3.1",
     "monaco-editor": "^0.43.0",
     "monaco-themes": "^0.4.4",
@@ -97,6 +97,7 @@
     "typescript": "^5.2.2",
     "vite": "^4.4.9",
     "vitest": "^0.34.6",
-    "zod": "^3.22.2"
+    "zod": "^3.22.2",
+    "zod-i18n-map": "^2.19.0"
   }
 }

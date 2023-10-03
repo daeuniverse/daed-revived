@@ -1,9 +1,9 @@
 import { z } from 'zod'
 
 export const configFormSchema = z.object({
-  tproxyPort: z.number(),
+  tproxyPort: z.number().min(0).max(65535).positive(),
   tproxyPortProtect: z.boolean(),
-  soMarkFromDae: z.number(),
+  soMarkFromDae: z.number().positive(),
   logLevel: z.string(),
   disableWaitingNetwork: z.boolean(),
   lanInterface: z.array(z.string().nonempty()),
@@ -12,11 +12,11 @@ export const configFormSchema = z.object({
   tcpCheckUrl: z.array(z.string().nonempty()).nonempty(),
   tcpCheckHttpMethod: z.string(),
   udpCheckDns: z.array(z.string().nonempty()).nonempty(),
-  checkIntervalSeconds: z.number(),
-  checkToleranceMS: z.number(),
+  checkIntervalSeconds: z.number().positive(),
+  checkToleranceMS: z.number().positive(),
   dialMode: z.string(),
   allowInsecure: z.boolean(),
-  sniffingTimeoutMS: z.number(),
+  sniffingTimeoutMS: z.number().positive(),
   tlsImplementation: z.string(),
   utlsImitate: z.string()
 })
