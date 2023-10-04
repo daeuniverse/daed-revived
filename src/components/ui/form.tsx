@@ -10,9 +10,7 @@ const Form = FormProvider
 type FormFieldContextValue<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
-> = {
-  name: TName
-}
+> = { name: TName }
 
 const FormFieldContext = React.createContext<FormFieldContextValue>({} as FormFieldContextValue)
 
@@ -21,13 +19,11 @@ const FormField = <
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 >({
   ...props
-}: ControllerProps<TFieldValues, TName>) => {
-  return (
-    <FormFieldContext.Provider value={{ name: props.name }}>
-      <Controller {...props} />
-    </FormFieldContext.Provider>
-  )
-}
+}: ControllerProps<TFieldValues, TName>) => (
+  <FormFieldContext.Provider value={{ name: props.name }}>
+    <Controller {...props} />
+  </FormFieldContext.Provider>
+)
 
 const useFormField = () => {
   const fieldContext = React.useContext(FormFieldContext)
@@ -52,9 +48,7 @@ const useFormField = () => {
   }
 }
 
-type FormItemContextValue = {
-  id: string
-}
+type FormItemContextValue = { id: string }
 
 const FormItemContext = React.createContext<FormItemContextValue>({} as FormItemContextValue)
 
@@ -81,7 +75,12 @@ const FormLabel = React.forwardRef<
     <Label
       ref={ref}
       htmlFor={formItemId}
-      className={cn(isDirty && 'text-muted-foreground', error && 'text-destructive', className)}
+      className={cn(
+        isDirty && 'text-muted-foreground',
+        error && 'text-destructive',
+        'flex items-center gap-2',
+        className
+      )}
       {...props}
     >
       {isDirty && '*'} {children}
@@ -119,7 +118,7 @@ FormDescription.displayName = 'FormDescription'
 const FormMessage = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<HTMLParagraphElement>>(
   ({ className, children, ...props }, ref) => {
     const { error, formMessageId } = useFormField()
-    const body = error ? String(error?.message) : children
+    const body = error?.message ? String(error.message) : children
 
     if (!body) {
       return null

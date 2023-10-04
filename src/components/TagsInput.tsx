@@ -22,7 +22,7 @@ export type TagsInputProps = {
 } & Omit<HTMLAttributes<HTMLInputElement>, 'value' | 'onChange'>
 
 const TagsInput = forwardRef<HTMLInputElement, TagsInputProps>(
-  ({ options = [], value = [], onChange, placeholder, ...props }, ref) => {
+  ({ className, options = [], value = [], onChange, ...props }, ref) => {
     const [inputValue, setInputValue] = useState('')
 
     const items = useMemo(
@@ -139,9 +139,15 @@ const TagsInput = forwardRef<HTMLInputElement, TagsInputProps>(
           <div className="flex flex-1 grow gap-2">
             <input
               ref={ref}
-              className="min-w-[2rem] flex-1 bg-inherit text-sm outline-0 ring-0 placeholder:text-muted-foreground"
-              placeholder={placeholder}
-              {...getInputProps(getDropdownProps({ preventKeyAction: isOpen }))}
+              {...getInputProps(
+                getDropdownProps({
+                  className: cn(
+                    'min-w-[2rem] flex-1 bg-inherit text-sm outline-0 ring-0 placeholder:text-muted-foreground',
+                    className
+                  ),
+                  preventKeyAction: isOpen
+                })
+              )}
               {...props}
             />
 
@@ -156,14 +162,20 @@ const TagsInput = forwardRef<HTMLInputElement, TagsInputProps>(
             <FloatingPortal>
               <ul
                 ref={refs.setFloating}
-                className="z-[100] max-h-64 overflow-y-auto rounded bg-background"
+                className="z-50 max-h-64 overflow-y-auto rounded bg-background"
                 style={{ width: portalSize?.width, ...floatingStyles }}
               >
                 {items.map((item, index) => (
                   <li
                     key={index}
-                    className={cn(highlightedIndex === index && 'bg-accent ', 'flex flex-col gap-1 p-2')}
-                    {...getItemProps({ item, index })}
+                    {...getItemProps({
+                      item,
+                      index,
+                      className: cn(
+                        highlightedIndex === index && 'bg-accent ',
+                        'flex cursor-pointer flex-col gap-1 p-2'
+                      )
+                    })}
                   >
                     <span className={cn(highlightedIndex === index && 'font-bold', 'text-sm')}>
                       {item.title || item.value}

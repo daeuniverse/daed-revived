@@ -8,6 +8,7 @@ import { z } from 'zod'
 import { useRemoveConfigMutation, useSelectConfigMutation, useUpdateConfigMutation } from '~/apis/mutation'
 import { useConfigsQuery, useGeneralQuery, useGetJSONStorageRequest } from '~/apis/query'
 import { CodeBlock } from '~/components/CodeBlock'
+import { ListInput } from '~/components/ListInput'
 import { TagsInput, TagsInputOption } from '~/components/TagsInput'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '~/components/ui/accordion'
 import { Badge } from '~/components/ui/badge'
@@ -41,9 +42,9 @@ import {
 export const ConfigPage = () => {
   const { t } = useTranslation()
   const form = useForm<z.infer<typeof configFormSchema>>({
+    shouldFocusError: true,
     resolver: zodResolver(configFormSchema),
-    defaultValues: configFormDefault,
-    shouldFocusError: true
+    defaultValues: configFormDefault
   })
   const touched = Object.values(form.formState.dirtyFields).some((dirty) => dirty)
   const defaultConfigIdQuery = useGetJSONStorageRequest(['defaultConfigID'] as const)
@@ -58,9 +59,7 @@ export const ConfigPage = () => {
   const lanInterfaces: TagsInputOption[] = useMemo(() => {
     const interfaces = generalQuery.data?.general.interfaces
 
-    if (!interfaces) {
-      return []
-    }
+    if (!interfaces) return []
 
     return interfaces.map(({ name, ip }) => ({
       label: name,
@@ -78,9 +77,7 @@ export const ConfigPage = () => {
   const wanInterfaces: TagsInputOption[] = useMemo(() => {
     const interfaces = generalQuery.data?.general.interfaces
 
-    if (!interfaces) {
-      return []
-    }
+    if (!interfaces) return []
 
     return [
       { title: t('primitives.autoDetect'), value: 'auto' },
@@ -168,7 +165,6 @@ export const ConfigPage = () => {
                 <DialogContent size="medium">
                   <Form {...form}>
                     <form
-                      className="contents"
                       onSubmit={form.handleSubmit(async (values) => {
                         const { checkIntervalSeconds, checkToleranceMS, sniffingTimeoutMS, ...global } = values
 
@@ -181,9 +177,7 @@ export const ConfigPage = () => {
                             sniffingTimeout: `${sniffingTimeoutMS}ms`
                           }
                         })
-
                         await configsQuery.refetch()
-
                         setEditDialogOpened(false)
                       })}
                     >
@@ -390,7 +384,7 @@ export const ConfigPage = () => {
                                       <FormDescription>{t('form.descriptions.tcpCheckUrl')}</FormDescription>
 
                                       <FormControl>
-                                        <TagsInput {...field} />
+                                        <ListInput name={field.name} />
                                       </FormControl>
 
                                       <FormMessage />
@@ -438,7 +432,7 @@ export const ConfigPage = () => {
                                       <FormDescription>{t('form.descriptions.udpCheckDns')}</FormDescription>
 
                                       <FormControl>
-                                        <TagsInput {...field} />
+                                        <ListInput name={field.name} />
                                       </FormControl>
 
                                       <FormMessage />

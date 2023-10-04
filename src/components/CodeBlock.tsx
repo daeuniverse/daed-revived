@@ -3,7 +3,7 @@ import SyntaxHighlighter, { SyntaxHighlighterProps } from 'react-syntax-highligh
 import { atomOneDark, atomOneLight } from 'react-syntax-highlighter/dist/esm/styles/hljs'
 import { useTheme } from '~/components/ui/theme-provider'
 
-export const CodeBlock: FC<{ children: string } & SyntaxHighlighterProps> = ({ children, ...props }) => {
+const CodeBlock: FC<{ children: string } & SyntaxHighlighterProps> = ({ children, ...props }) => {
   const { resolvedTheme } = useTheme()
 
   return (
@@ -12,3 +12,6 @@ export const CodeBlock: FC<{ children: string } & SyntaxHighlighterProps> = ({ c
     </SyntaxHighlighter>
   )
 }
+CodeBlock.displayName = 'CodeBlock'
+
+export { CodeBlock }

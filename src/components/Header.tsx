@@ -1,5 +1,6 @@
 import i18n from 'i18next'
 import { ActivityIcon, CogIcon, GlobeIcon, LanguagesIcon, NetworkIcon } from 'lucide-react'
+import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation } from 'react-router-dom'
 import { useUserQuery } from '~/apis/query'
@@ -16,7 +17,7 @@ import {
 } from '~/components/ui/navigation-menu'
 import { Tooltip, TooltipContent, TooltipTrigger } from '~/components/ui/tooltip'
 
-export const Header = () => {
+const Header: FC = () => {
   const { t } = useTranslation()
   const location = useLocation()
   const userQuery = useUserQuery()
@@ -82,3 +83,6 @@ export const Header = () => {
     </div>
   )
 }
+Header.displayName = 'Header'
+
+export { Header }

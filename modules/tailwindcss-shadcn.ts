@@ -54,7 +54,9 @@ export default plugin(
       body: {
         '@apply bg-background text-foreground': {},
         'font-feature-settings': "'rlig' 1, 'calt' 1"
-      }
+      },
+
+      form: { '@apply contents': {} }
     })
   },
   {
