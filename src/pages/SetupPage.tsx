@@ -1,6 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { gql } from 'graphql-request'
 import { useAtom } from 'jotai'
+import { FC } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -12,22 +13,17 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from '~/components/ui/input'
 import { toast } from '~/components/ui/use-toast'
 import { useGraphqlClient } from '~/contexts'
+import { setupFormDefault, setupFormSchema } from '~/schemas/setup'
 
-export const SetupPage = () => {
+export const SetupPage: FC = () => {
   const { t } = useTranslation()
   const [, setEndpointInfo] = useAtom(endpointInfoAtom)
   const graphqlClient = useGraphqlClient()
   const navigate = useNavigate()
 
-  const schema = z.object({
-    endpointURL: z.string().url().nonempty(),
-    username: z.string().min(4).max(20),
-    password: z.string().min(6).max(20)
-  })
-
-  const form = useForm<z.infer<typeof schema>>({
-    resolver: zodResolver(schema),
-    defaultValues: { endpointURL: '', username: '', password: '' }
+  const form = useForm<z.infer<typeof setupFormSchema>>({
+    resolver: zodResolver(setupFormSchema),
+    defaultValues: setupFormDefault
   })
 
   return (

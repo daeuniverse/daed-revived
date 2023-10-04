@@ -22,7 +22,7 @@ export const editConfigFormSchema = z.object({
 })
 
 export const createConfigFormSchema = editConfigFormSchema.extend({
-  name: z.string().min(4).max(20)
+  name: z.string().nonempty().max(20)
 })
 
 export enum LogLevel {

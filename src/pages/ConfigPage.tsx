@@ -7,7 +7,12 @@ import { FC, Fragment, useMemo, useState } from 'react'
 import { SubmitHandler, UseFormReturn, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { z } from 'zod'
-import { useRemoveConfigMutation, useSelectConfigMutation, useUpdateConfigMutation } from '~/apis/mutation'
+import {
+  useCreateConfigMutation,
+  useRemoveConfigMutation,
+  useSelectConfigMutation,
+  useUpdateConfigMutation
+} from '~/apis/mutation'
 import { useConfigsQuery, useGeneralQuery, useGetJSONStorageRequest } from '~/apis/query'
 import { CodeBlock } from '~/components/CodeBlock'
 import { ListInput } from '~/components/ListInput'
@@ -553,7 +558,7 @@ const ConfigDialogContent: FC<
   )
 }
 
-export const ConfigPage = () => {
+export const ConfigPage: FC = () => {
   const { t } = useTranslation()
   const createForm = useForm<z.infer<typeof createConfigFormSchema>>({
     shouldFocusError: true,
@@ -569,8 +574,10 @@ export const ConfigPage = () => {
   const generalQuery = useGeneralQuery()
   const configsQuery = useConfigsQuery()
   const isDefault = (id: string) => id === defaultConfigIdQuery.data?.defaultConfigID
+  const [createDialogOpened, setCreateDialogOpened] = useState(false)
   const [editDialogOpened, setEditDialogOpened] = useState(false)
   const selectConfigMutation = useSelectConfigMutation()
+  const createConfigMutation = useCreateConfigMutation()
   const updateConfigMutation = useUpdateConfigMutation()
   const removeConfigMutation = useRemoveConfigMutation()
 
@@ -620,7 +627,7 @@ export const ConfigPage = () => {
       <div className="flex items-center justify-between">
         <span className="text-lg">Configs</span>
 
-        <Dialog>
+        <Dialog open={createDialogOpened} onOpenChange={setCreateDialogOpened}>
           <DialogTrigger asChild>
             <Button size="icon">
               <PlusIcon />
@@ -632,7 +639,21 @@ export const ConfigPage = () => {
             lanInterfaces={lanInterfaces}
             wanInterfaces={wanInterfaces}
             form={createForm}
-            onSubmit={() => {}}
+            onSubmit={async (values) => {
+              const { name, checkIntervalSeconds, checkToleranceMS, sniffingTimeoutMS, ...global } = values
+
+              await createConfigMutation.mutateAsync({
+                name,
+                global: {
+                  ...global,
+                  checkInterval: `${checkIntervalSeconds}s`,
+                  checkTolerance: `${checkToleranceMS}ms`,
+                  sniffingTimeout: `${sniffingTimeoutMS}ms`
+                }
+              })
+              await configsQuery.refetch()
+              setCreateDialogOpened(false)
+            }}
           />
         </Dialog>
       </div>
