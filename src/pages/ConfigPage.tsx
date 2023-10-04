@@ -673,7 +673,11 @@ export const ConfigPage: FC = () => {
 
             <CardFooter className="gap-2">
               {!config.selected && (
-                <Button className="gap-2" onClick={() => selectConfigMutation.mutate({ id: config.id })}>
+                <Button
+                  className="gap-2"
+                  loading={selectConfigMutation.isLoading}
+                  onClick={() => selectConfigMutation.mutate({ id: config.id })}
+                >
                   <SelectIcon className="w-4" />
                   {t('actions.select')}
                 </Button>
@@ -750,6 +754,7 @@ export const ConfigPage: FC = () => {
                   className="gap-2"
                   icon={<Trash2Icon className="w-4" />}
                   disabled={config.selected}
+                  loading={removeConfigMutation.isLoading}
                   onClick={() => removeConfigMutation.mutate({ id: config.id })}
                 >
                   {t('actions.remove')}
