@@ -1,6 +1,7 @@
 {
   "form": {
     "fields": {
+      "name": "名称",
       "endpointURL": "接口地址",
       "username": "用户名",
       "password": "密码",
@@ -73,6 +74,7 @@
     "submit": "提交"
   },
   "primitives": {
+    "create": "创建{{resourceName}}",
     "routing": "路由",
     "dns": "域名解析",
     "config": "配置",

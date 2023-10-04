@@ -1,6 +1,7 @@
 {
   "form": {
     "fields": {
+      "name": "Name",
       "endpointURL": "Endpoint URL",
       "username": "Username",
       "password": "Password",
@@ -73,6 +74,7 @@
     "submit": "Submit"
   },
   "primitives": {
+    "create": "Create {{resourceName}}",
     "routing": "Routing",
     "dns": "DNS",
     "config": "Config",

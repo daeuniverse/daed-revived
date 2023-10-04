@@ -92,7 +92,7 @@ const DialogBody = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDiv
   ({ className, asChild, ...props }, ref) => {
     const Comp = asChild ? Slot : 'div'
 
-    return <Comp ref={ref} className={cn('flex-1 overflow-y-auto p-2 sm:p-4', className)} {...props} />
+    return <Comp ref={ref} className={cn('flex-1 overflow-y-auto p-4 sm:p-6', className)} {...props} />
   }
 )
 DialogBody.displayName = 'DialogBody'
@@ -100,7 +100,7 @@ DialogBody.displayName = 'DialogBody'
 const DialogHeader = ({ className, children, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
     className={cn(
-      'sticky top-0 z-[100] flex flex-col space-y-1.5 border-b bg-background p-2 text-center sm:p-4 sm:text-left',
+      'sticky top-0 z-[100] flex flex-col gap-2 border-b bg-background p-4 text-center sm:p-6 sm:text-left',
       className
     )}
     {...props}
@@ -119,7 +119,7 @@ DialogHeader.displayName = 'DialogHeader'
 const DialogFooter = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
     className={cn(
-      'sticky bottom-0 flex flex-col-reverse gap-2 border-t bg-background p-2 sm:flex-row sm:justify-end sm:p-4',
+      'sticky bottom-0 flex flex-col-reverse gap-2 border-t bg-background p-4 sm:flex-row sm:justify-end sm:p-6',
       className
     )}
     {...props}

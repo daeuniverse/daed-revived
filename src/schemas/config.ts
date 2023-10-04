@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-export const configFormSchema = z.object({
+export const editConfigFormSchema = z.object({
   tproxyPort: z.number().min(0).max(65535).positive(),
   tproxyPortProtect: z.boolean(),
   soMarkFromDae: z.number().positive(),
@@ -19,6 +19,10 @@ export const configFormSchema = z.object({
   sniffingTimeoutMS: z.number().positive(),
   tlsImplementation: z.string(),
   utlsImitate: z.string()
+})
+
+export const createConfigFormSchema = editConfigFormSchema.extend({
+  name: z.string().min(4).max(20)
 })
 
 export enum LogLevel {
@@ -93,7 +97,7 @@ export enum UTLSImitate {
   qq_11_1 = 'qq_11_1'
 }
 
-export const configFormDefault: z.infer<typeof configFormSchema> = {
+export const editConfigFormDefault: z.infer<typeof editConfigFormSchema> = {
   tproxyPort: 12345,
   tproxyPortProtect: true,
   soMarkFromDae: 80,
@@ -112,4 +116,9 @@ export const configFormDefault: z.infer<typeof configFormSchema> = {
   sniffingTimeoutMS: 100,
   tlsImplementation: TLSImplementation.tls,
   utlsImitate: UTLSImitate.randomized
+}
+
+export const createConfigFormDefault: z.infer<typeof createConfigFormSchema> = {
+  name: '',
+  ...editConfigFormDefault
 }

@@ -1,13 +1,12 @@
 import { PlusIcon, XIcon } from 'lucide-react'
 import { FC } from 'react'
-import { useFieldArray, useFormContext } from 'react-hook-form'
+import { useFieldArray } from 'react-hook-form'
 import { Button } from '~/components/ui/button'
 import { FormField, FormItem, FormMessage } from '~/components/ui/form'
 import { Input } from '~/components/ui/input'
 
 const ListInput: FC<{ name: string }> = ({ name }) => {
-  const form = useFormContext()
-  const { fields, append, remove } = useFieldArray({ name, control: form.control })
+  const { fields, append, remove } = useFieldArray({ name })
 
   return (
     <div className="flex flex-col gap-2">

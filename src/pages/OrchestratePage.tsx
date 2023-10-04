@@ -46,6 +46,7 @@ export const OrchestratePage = () => {
           <FormField
             name="books"
             control={form.control}
+            list
             render={({ field }) => (
               <FormItem>
                 <FormLabel>books</FormLabel>
@@ -62,6 +63,7 @@ export const OrchestratePage = () => {
           <FormField
             name="authors"
             control={form.control}
+            list
             render={({ field }) => (
               <FormItem>
                 <FormLabel>authors</FormLabel>
@@ -75,6 +77,9 @@ export const OrchestratePage = () => {
             )}
           />
 
+          <Button type="reset" variant="secondary" onClick={() => form.reset()}>
+            {t('actions.reset')}
+          </Button>
           <Button type="submit">{t('actions.submit')}</Button>
         </form>
       </Form>
