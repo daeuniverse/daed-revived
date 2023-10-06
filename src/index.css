@@ -8,25 +8,24 @@
 }
 
 ::-webkit-scrollbar {
-  background: transparent;
-  display: none;
+  @apply hidden bg-transparent;
 }
 
 ::-webkit-scrollbar:vertical {
-  width: 6px;
+  @apply w-1;
 }
 
 ::-webkit-scrollbar:horizontal {
-  height: 6px;
+  @apply h-1;
 }
 
-@media (width >= 640px) {
+@screen sm {
   :root {
     scrollbar-color: hsl(var(--primary)) transparent;
   }
 
   ::-webkit-scrollbar {
-    display: block;
+    @apply block;
   }
 
   ::-webkit-scrollbar-thumb {

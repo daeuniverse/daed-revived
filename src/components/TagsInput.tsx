@@ -1,10 +1,11 @@
-import { autoUpdate, flip, FloatingPortal, offset, useFloating } from '@floating-ui/react'
-import { useSize } from 'ahooks'
+import { autoUpdate, flip, offset, useFloating } from '@floating-ui/react'
+import * as Portal from '@radix-ui/react-portal'
 import { useCombobox, useMultipleSelection } from 'downshift'
 import { differenceWith } from 'lodash'
 import { ChevronDownIcon, ChevronUpIcon, XIcon } from 'lucide-react'
 import { matchSorter } from 'match-sorter'
-import { forwardRef, HTMLAttributes, ReactNode, useMemo, useRef, useState } from 'react'
+import { HTMLAttributes, ReactNode, forwardRef, useMemo, useState } from 'react'
+import { useMeasure } from 'react-use'
 import { Badge } from '~/components/ui/badge'
 import { Button } from '~/components/ui/button'
 import { cn } from '~/lib/ui'
@@ -57,7 +58,7 @@ const TagsInput = forwardRef<HTMLInputElement, TagsInputProps>(
     const { isOpen, getToggleButtonProps, getMenuProps, getInputProps, highlightedIndex, getItemProps } = useCombobox({
       items,
       itemToString: (item) => (item?.title ? item.title : ''),
-      defaultHighlightedIndex: 0, // after selection, highlight the first item.
+      defaultHighlightedIndex: 0,
       selectedItem: null,
       inputValue,
 
@@ -99,8 +100,7 @@ const TagsInput = forwardRef<HTMLInputElement, TagsInputProps>(
 
     const open = !!(isOpen && items.length)
 
-    const portalRef = useRef<HTMLDivElement>(null)
-    const portalSize = useSize(portalRef)
+    const [measureRef, { width }] = useMeasure<HTMLDivElement>()
 
     const { refs, floatingStyles } = useFloating({
       whileElementsMounted: autoUpdate,
@@ -108,9 +108,9 @@ const TagsInput = forwardRef<HTMLInputElement, TagsInputProps>(
     })
 
     return (
-      <div ref={refs.setReference}>
+      <div ref={measureRef}>
         <div
-          ref={portalRef}
+          ref={refs.setReference}
           className="inline-flex w-full flex-wrap items-center gap-2 rounded-md border bg-background p-2 shadow-sm focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 focus-within:ring-offset-background"
         >
           {value.map((selectedValue, index) => (
@@ -142,7 +142,7 @@ const TagsInput = forwardRef<HTMLInputElement, TagsInputProps>(
               {...getInputProps(
                 getDropdownProps({
                   className: cn(
-                    'min-w-[2rem] flex-1 bg-inherit text-sm outline-0 ring-0 placeholder:text-muted-foreground',
+                    'min-w-[2rem] flex-1 bg-inherit text-sm outline-0 ring-0 placeholder:text-muted-foreground outline-none ring-0',
                     className
                   ),
                   preventKeyAction: isOpen
@@ -159,12 +159,8 @@ const TagsInput = forwardRef<HTMLInputElement, TagsInputProps>(
 
         <div className={cn(open && 'hidden')} {...getMenuProps()}>
           {open && (
-            <FloatingPortal>
-              <ul
-                ref={refs.setFloating}
-                className="z-50 max-h-64 overflow-y-auto rounded bg-background"
-                style={{ width: portalSize?.width, ...floatingStyles }}
-              >
+            <Portal.Root ref={refs.setFloating} className="z-[100]" style={{ width, ...floatingStyles }}>
+              <ul className="max-h-64 overflow-y-auto rounded bg-background">
                 {items.map((item, index) => (
                   <li
                     key={index}
@@ -185,7 +181,7 @@ const TagsInput = forwardRef<HTMLInputElement, TagsInputProps>(
                   </li>
                 ))}
               </ul>
-            </FloatingPortal>
+            </Portal.Root>
           )}
         </div>
       </div>

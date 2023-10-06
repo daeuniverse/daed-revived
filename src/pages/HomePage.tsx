@@ -12,6 +12,7 @@ import { TagsInput, TagsInputOption } from '~/components/TagsInput'
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar'
 import { Button } from '~/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
+import { useToast } from '~/components/ui/use-toast'
 import { useGraphqlClient } from '~/contexts'
 
 const books: TagsInputOption[] = [
@@ -29,6 +30,7 @@ const books: TagsInputOption[] = [
 
 export const HomePage: FC = () => {
   const { t } = useTranslation()
+  const { toast } = useToast()
   const graphqlClient = useGraphqlClient()
   const userQuery = useQuery<UserQuery>({
     queryKey: ['user'],
@@ -92,7 +94,7 @@ domain(geosite:cn) -> direct
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit((values) => {
-            console.log(values)
+            toast({ title: 'Success', description: JSON.stringify(values) })
           })}
         >
           <FormField

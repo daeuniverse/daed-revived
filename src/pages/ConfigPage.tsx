@@ -20,7 +20,7 @@ import { TagsInput, TagsInputOption } from '~/components/TagsInput'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '~/components/ui/accordion'
 import { Badge } from '~/components/ui/badge'
 import { Button } from '~/components/ui/button'
-import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '~/components/ui/card'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '~/components/ui/card'
 import {
   Dialog,
   DialogBody,
@@ -625,13 +625,11 @@ export const ConfigPage: FC = () => {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <span className="text-lg">Configs</span>
+        <h2 className="text-lg">Configs</h2>
 
         <Dialog open={createDialogOpened} onOpenChange={setCreateDialogOpened}>
           <DialogTrigger asChild>
-            <Button size="icon">
-              <PlusIcon />
-            </Button>
+            <Button size="icon" icon={<PlusIcon className="w-4" />} />
           </DialogTrigger>
 
           <ConfigDialogContent
@@ -671,23 +669,21 @@ export const ConfigPage: FC = () => {
               )}
             </CardHeader>
 
+            <CardContent>{config.id}</CardContent>
+
             <CardFooter className="gap-2">
               {!config.selected && (
                 <Button
-                  className="gap-2"
+                  size="icon"
                   loading={selectConfigMutation.isLoading}
                   onClick={() => selectConfigMutation.mutate({ id: config.id })}
-                >
-                  <SelectIcon className="w-4" />
-                  {t('actions.select')}
-                </Button>
+                  icon={<SelectIcon className="w-4" />}
+                />
               )}
 
               <Dialog>
                 <DialogTrigger asChild>
-                  <Button size="icon">
-                    <CodeIcon className="w-4" />
-                  </Button>
+                  <Button size="icon" icon={<CodeIcon className="w-4" />} />
                 </DialogTrigger>
 
                 <DialogContent>
@@ -717,10 +713,7 @@ export const ConfigPage: FC = () => {
                 }}
               >
                 <DialogTrigger asChild>
-                  <Button variant="secondary" className="gap-2">
-                    <EditIcon className="w-4" />
-                    {t('actions.edit')}
-                  </Button>
+                  <Button variant="secondary" size="icon" icon={<EditIcon className="w-4" />} />
                 </DialogTrigger>
 
                 <ConfigDialogContent
@@ -751,14 +744,12 @@ export const ConfigPage: FC = () => {
               {!isDefault(config.id) && (
                 <Button
                   variant="destructive"
-                  className="gap-2"
+                  size="icon"
                   icon={<Trash2Icon className="w-4" />}
                   disabled={config.selected}
                   loading={removeConfigMutation.isLoading}
                   onClick={() => removeConfigMutation.mutate({ id: config.id })}
-                >
-                  {t('actions.remove')}
-                </Button>
+                />
               )}
             </CardFooter>
           </Card>

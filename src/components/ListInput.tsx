@@ -20,9 +20,12 @@ const ListInput: FC<{ name: string }> = ({ name }) => {
                 <div className="flex gap-2">
                   <Input {...field} />
 
-                  <Button variant="destructive" size="icon" onClick={() => remove(index)}>
-                    <XIcon className="h-4 w-4" />
-                  </Button>
+                  <Button
+                    variant="destructive"
+                    size="icon"
+                    icon={<XIcon className="w-4" />}
+                    onClick={() => remove(index)}
+                  />
                 </div>
 
                 <FormMessage />
@@ -32,9 +35,7 @@ const ListInput: FC<{ name: string }> = ({ name }) => {
         )
       })}
 
-      <Button onClick={() => append('')}>
-        <PlusIcon className="h-4 w-4" />
-      </Button>
+      <Button onClick={() => append('')} icon={<PlusIcon className="w-4" />} />
     </div>
   )
 }

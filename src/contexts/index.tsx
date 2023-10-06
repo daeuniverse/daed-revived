@@ -13,7 +13,6 @@ export const GraphqlClientProvider: FC<{ children: ReactNode }> = ({ children })
   const [endpointInfo, setEndpointInfo] = useAtom(endpointInfoAtom)
 
   const graphqlClient = useMemo(() => {
-    // noinspection JSUnusedGlobalSymbols
     const client = new GraphQLClient('', {
       responseMiddleware: (response) => {
         const error = (response as ClientError).response?.errors?.[0]
