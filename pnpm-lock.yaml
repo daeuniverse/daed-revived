@@ -261,8 +261,8 @@ dependencies:
     specifier: ^3.22.3
     version: 3.22.3
   zod-i18n-map:
-    specifier: ^2.19.0
-    version: 2.19.0(i18next@23.5.1)(zod@3.22.3)
+    specifier: ^2.22.0
+    version: 2.22.0(i18next@23.5.1)(zod@3.22.3)
 
 packages:
 
@@ -9319,8 +9319,8 @@ packages:
     engines: {node: '>=12.20'}
     dev: false
 
-  /zod-i18n-map@2.19.0(i18next@23.5.1)(zod@3.22.3):
-    resolution: {integrity: sha512-V/xD3MjO6X+IGjIzVrV9QAbWa3ZVPDXROUpy9KnDfqUhi3diDtnKmmHG2JtVlqXFDRl36pSNH9pit6I7t6Wiyg==}
+  /zod-i18n-map@2.22.0(i18next@23.5.1)(zod@3.22.3):
+    resolution: {integrity: sha512-prgPGhqst66gUvhFqOi4bCrr6Ld/HKBX+IrSHSNUcNgHOTXlIJ3YCD2UrFpo8W++++TMaM4HBRHO0haplWkTLQ==}
     peerDependencies:
       i18next: '>=21.3.0'
       zod: '>=3.17.0'
